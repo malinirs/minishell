@@ -1,97 +1,53 @@
 #include "minishell.h"
 
-int	ft_strlen(const char *str)
+int	ft_isalnum(int c)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-int	ft_strlcpy(char *dst, const char *src, int dstsize)
-{
-	int	i;
-
-	i = 0;
-	if (!dst || !src)
+	if ((c > 64 && c < 91) || (c > 96 && c < 123) || (c > 47 && c < 58))
+		return (1);
+	else
 		return (0);
-	if (dstsize > 0)
+}
+
+char	*ft_strstr(char *haystack, char *needle)
+/** находит первое вхождение строковой needle с нулевым символом в конце
+ * в haystack строки с нулевым символом в конце */
+{
+	int i;
+	int j;
+
+	i = 0;
+	if (needle[0] == '\0')
+		return (haystack);
+	while (haystack[i] != '\0')
 	{
-		while (src[i] && i < (dstsize - 1))
+		j = 0;
+		while (needle[j] != '\0')
 		{
-			dst[i] = src[i];
-			i++;
+			if (haystack[i + j] != needle[j])
+				break ;
+			j++;
 		}
-		dst[i] = '\0';
-	}
-	i = 0;
-	while (src[i])
+		if (needle[j] == '\0')
+			return (haystack + i);
 		i++;
-	return (i);
+	}
+	return (0);
 }
 
-char	*ft_substr(char *s, int start, int len)
+int	ft_strcmp(char *s1, char *s2)
+/** сравнивает строки s1 и s2 с завершающим нулем */
 {
-	char	*str;
-	int	i;
-	int	len_s;
+	int	n;
 
-	i = 0;
-	if (!s)
-		return (NULL);
-	str = malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (NULL);
-	len_s = ft_strlen(s);
-	while (i < len && start <= len_s)
-	{
-		str[i] = s[start];
-		start++;
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*str;
-	int		i;
-
-	i = ft_strlen(s1) + 1;
-	str = malloc((*s1) * i);
-	if (!str)
-		return (NULL);
-	ft_strlcpy(str, s1, i);
-	return (str);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*str;
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	if (!s1)
-		return (NULL);
-	str = malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!str)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j] != '\0')
-	{
-		str[i] = s2[j];
-		i++;
-		j++;
-	}
-	str[i] = '\0';
-	return (str);
+	n = 0;
+	while ((s1[n] != '\0') && (s2[n] != '\0') && (s1[n] == s2[n]))
+		n++;
+	if ((s1[n] == '\0') && (s2[n] == '\0'))
+		return (0);
+	else if ((s1[n] == '\0') && (s2[n] != '\0'))
+		return (-1);
+	else if ((s1[n] != '\0') && (s2[n] == '\0'))
+		return (1);
+	else
+		return (s1[n] - s2[n]);
 }
