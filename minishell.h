@@ -14,5 +14,6 @@
 //int		ft_isalnum(int c);
 char	*ft_strstr(char *haystack, char *to_find);
 int		ft_strcmp(char *s1, char *s2);
+char	*pars_dollar(char *str, int *i, char **env);
 
 #endif
