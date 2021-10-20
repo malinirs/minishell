@@ -2,6 +2,7 @@ NAME	=	minishell
 HEADER	=	minishell.h
 SOURCE	=	main.c \
 			utils_1.c \
+			pars_dollar.c \
 #
 SRCS	=	$(SOURCE)
 OBJS	=	$(SRCS:.c=.o)

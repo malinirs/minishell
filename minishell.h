@@ -4,7 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include "Libft/libft.h"
+
+typedef struct s_pars_flags
+{
+	bool	dollar;
+}				t_pars_flags;
 
 //int		ft_strlen(const char *str);
 //char	*ft_strdup(const char *s1);

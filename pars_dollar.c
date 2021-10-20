@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:32:10 by awoods            #+#    #+#             */
-/*   Updated: 2021/10/19 16:32:13 by awoods           ###   ########.fr       */
+/*   Updated: 2021/10/20 19:39:51 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*insertion_key(char *str, char *key, int first, int last)
 	free(temp1);
 	free(temp2);
 
-	printf("temp3 = %s\n", temp3);
+	printf("dollar_vs = %s\n", temp3);
 
 	return (temp3);
 }
@@ -42,6 +42,9 @@ static char	*delete_key(char *str, int first, int last)
 	temp3 = ft_strjoin(temp1, temp2);
 	free(temp1);
 	free(temp2);
+
+	printf("dollar_de = %s\n", temp3);
+
 	return (temp3);
 }
 
@@ -63,12 +66,13 @@ static char	*search_key(char **env, char *temp)
 			temp2 = ft_substr(env[i], 0, j);
 			if (ft_strcmp(temp, temp2) == 0) /** строки совпадают, если == 0 */
 				break ;
-				else
-					free(temp2);
+			free(temp2);
 		}
 	}
 	if (temp2 == NULL)
 		return (NULL);
+	else
+		free(temp2);
 	temp2 = ft_substr(env[i], j + 1, ft_strlen(env[i]) - j);
 	return (temp2);
 }
