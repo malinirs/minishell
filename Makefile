@@ -3,6 +3,7 @@ HEADER	=	minishell.h
 SOURCE	=	main.c \
 			utils_1.c \
 			pars_dollar.c \
+			pars_quotes.c \
 #
 SRCS	=	$(SOURCE)
 OBJS	=	$(SRCS:.c=.o)

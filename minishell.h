@@ -7,19 +7,18 @@
 #include <stdbool.h>
 #include "Libft/libft.h"
 
-typedef struct s_pars_flags
+typedef struct s_flag
 {
-	bool	dollar;
-}				t_pars_flags;
+	int		end_code;
 
-//int		ft_strlen(const char *str);
-//char	*ft_strdup(const char *s1);
-//char	*ft_substr(char *s, int start, int len);
-//char	*ft_strjoin(char const *s1, char const *s2);
-//int		ft_strlcpy(char *dst, const char *src, int dstsize);
-//int		ft_isalnum(int c);
-char	*ft_strstr(char *haystack, char *to_find);
+}				t_flag;
+
+
+char	*ft_strstr(char *haystack, char *needle);
 int		ft_strcmp(char *s1, char *s2);
 char	*pars_dollar(char *str, int *i, char **env);
+char	*pars_single_quotes(char *str, int *i);
+char	*pars_double_quotes(char *str, int *i, char **env);
+
 
 #endif

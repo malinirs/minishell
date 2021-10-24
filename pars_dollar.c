@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:32:10 by awoods            #+#    #+#             */
-/*   Updated: 2021/10/20 19:39:51 by                  ###   ########.fr       */
+/*   Updated: 2021/10/24 13:55:49 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ char	*pars_dollar(char *str, int *i, char **env)
 	}
 	if (*i == j + 1)
 		return (str);
+	if (j - *i == 1)
+		return ("$");
 	key = ft_substr(str, j + 1, *i - j - 1);
 	meaning = search_key(env, key);
 	free(key);
