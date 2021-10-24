@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:32:10 by awoods            #+#    #+#             */
-/*   Updated: 2021/10/24 13:55:49 by                  ###   ########.fr       */
+/*   Updated: 2021/10/24 16:45:57 by awoods           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,3 +114,8 @@ char	*pars_dollar(char *str, int *i, char **env)
 	free(str);
 	return (temp);
 }
+
+
+//link_directories(Libft ~/.brew/opt/readline/include)
+//add_executable(Minishell main.c utils_1.c pars_dollar.c pars_quotes.c)
+//target_link_libraries(Minishell libft.a /brew/opt/readline/lib)

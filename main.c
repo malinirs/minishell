@@ -6,18 +6,18 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:33:16 by awoods            #+#    #+#             */
-/*   Updated: 2021/10/24 13:37:52 by                  ###   ########.fr       */
+/*   Updated: 2021/10/24 16:12:39 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing(char **argv, char **env)
+void	parsing(char *str, char **env)
 {
 	int				i;
 	i = -1;
 
-	char	*str = ft_strdup("a$USER j");
+//	char	*str = ft_strdup("\"$USER $USER $USER\" $USER kmk");
 
 	printf("str = %s\n", str);
 	while (str[++i])
@@ -34,11 +34,29 @@ void	parsing(char **argv, char **env)
 
 int main(int argc, char **argv, char **env)
 {
-	if (argc > 1)
-	{
+	(void)argc;
+	(void)argv;
 
-		parsing(argv, env);
+	char	*str;
+
+	while (true)
+	{
+		str = readline(MSH_AVE);
+//		if (g_status == 130)
+//		{
+//			msh.old_status = 1;
+//			g_status = 0;
+//		}
+		if (!str)
+			str = ft_strdup("exit");
+		add_history(str);
+
+		parsing(str, env);
+//		if (!parsing(&msh, str))
+//			run_commands_via_pipes(&msh);
+//		cleaning(&msh, str);
 	}
+
 
 
 //	while (1);

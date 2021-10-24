@@ -6,6 +6,10 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include "Libft/libft.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+
+# define MSH_AVE	"\033[32mMinishellOOOO$ \033[0m"
 
 typedef struct s_flag
 {

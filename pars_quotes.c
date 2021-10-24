@@ -41,7 +41,6 @@ char	*pars_double_quotes(char *str, int *i, char **env)
 {
 	int		start;
 	char	*temp1;
-	char	*temp2;
 
 	start = *i; /** координата начала */
 	while (str[++(*i)])
@@ -54,12 +53,11 @@ char	*pars_double_quotes(char *str, int *i, char **env)
 	start = -1;
 	while (temp1[++start])
 		if (temp1[start] == '$')
-			break ;
-	if (start != -1)
-	{
-		temp2 = pars_dollar(temp1, &start, env);
-		return (temp2);
-	}
+			temp1 = pars_dollar(temp1, &start, env);
+
 	printf("1_quotes2 = %s\n", temp1);
-	return (temp1);
+
+	str = temp1;
+	free(temp1);
+	return (str);
 }
