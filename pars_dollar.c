@@ -114,8 +114,3 @@ char	*pars_dollar(char *str, int *i, char **env)
 	free(str);
 	return (temp);
 }
-
-
-//link_directories(Libft ~/.brew/opt/readline/include)
-//add_executable(Minishell main.c utils_1.c pars_dollar.c pars_quotes.c)
-//target_link_libraries(Minishell libft.a /brew/opt/readline/lib)

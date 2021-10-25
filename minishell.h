@@ -1,22 +1,22 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include "Libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdbool.h>
+# include "Libft/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define MSH_AVE	"\033[32mMinishellOOOO$ \033[0m"
+# define MINI	"\033[32mMini$ \033[0m"
 
-typedef struct s_flag
+typedef struct s_lists
 {
-	int		end_code;
-
-}				t_flag;
-
+	char			**ptr;
+	struct s_lists	*next;
+	int				end_code; /** termination code - код завершения. Изменяется при выведении ошибки */
+}				t_lists;
 
 char	*ft_strstr(char *haystack, char *needle);
 int		ft_strcmp(char *s1, char *s2);
