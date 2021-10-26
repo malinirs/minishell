@@ -93,10 +93,8 @@ char	*pars_dollar(char *str, int *i, char **env)
 
 	j = *i; /** координата начала */
 	while (str[++(*i)])
-	{
 		if (!check_key(str[*i]))
 			break ; /** координата конца */
-	}
 	if (*i == j + 1)
 		return (str);
 	if (j - *i == 1)

@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	*ft_malloc_and_free(char **str, size_t	i, size_t	j, size_t	temp)
+static char	*ft_malloc_and_free(char **str, size_t	i, size_t	j, size_t	temp)
 {
 	str[j] = malloc(sizeof(char) * (i - temp + 1));
 	if (!*str)
@@ -52,7 +52,7 @@ size_t 	ft_check_nbr_str(char const	*s, char	c)
 	return (nb_str);
 }
 
-void	ft_nbr_index_and_copy(char const	*s, char	c, char	**str,
+static void	ft_nbr_index_and_copy(char const	*s, char	c, char	**str,
 							  size_t	nb_str)
 {
 	size_t	i;
@@ -79,7 +79,7 @@ void	ft_nbr_index_and_copy(char const	*s, char	c, char	**str,
 	str[j] = NULL;
 }
 
-char	**ft_split(char const	*s, char	c)
+char	**ft_split(char const *s, char c)
 {
 	char	**str;
 	size_t	nb_str;

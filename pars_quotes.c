@@ -25,13 +25,11 @@ char	*pars_single_quotes(char *str, int *i)
 
 	start = *i; /** координата начала */
 	while (str[++(*i)])
-	{
 		if (str[*i] == '\'')
 			break ; /** координата конца */
-	}
 	temp = delete_quotes(str, start, i);
 
-	printf("1_quotes1 = %s\n", temp);
+//	printf("1_quotes1 = %s\n", temp);
 
 	free(str);
 	return (temp);
@@ -44,10 +42,8 @@ char	*pars_double_quotes(char *str, int *i, char **env)
 
 	start = *i; /** координата начала */
 	while (str[++(*i)])
-	{
 		if (str[*i] == '\"')
 			break ; /** координата конца */
-	}
 	temp1 = delete_quotes(str, start, i);
 	free(str);
 	start = -1;
@@ -55,7 +51,7 @@ char	*pars_double_quotes(char *str, int *i, char **env)
 		if (temp1[start] == '$')
 			temp1 = pars_dollar(temp1, &start, env);
 
-	printf("1_quotes2 = %s\n", temp1);
+//	printf("1_quotes2 = %s\n", temp1);
 
 	str = temp1;
 	free(temp1);
