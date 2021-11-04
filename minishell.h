@@ -13,15 +13,27 @@
 
 typedef struct s_lists
 {
+	char			*str;
 	char			**ptr;
 	struct s_lists	*next;
 	int				end_code; /** termination code - код завершения. Изменяется при выведении ошибки */
 	int				number_str;
+	char			*operation; /** Redirects and Pipe*/
 }				t_lists;
+/** actions_file:
+ * 0 - nothing
+ * 1 - >
+ * 2 - >>
+ * 3 - <
+ * 4 - <<
+ * 5 - |   */
+
+
 
 typedef struct s_flags
 {
 	bool			implementation; /** еще есть команды в str для выполнения*/
+	int				start; /** координата делителя для листов и **ptr */
 }				t_flags;
 
 int	number_str;
@@ -39,9 +51,15 @@ char	*pars_single_quotes(char *str, int *i);
 char	*pars_double_quotes(char *str, int *i, char **env);
 
 /** utils_list_1.c */
-t_lists	*ft_lstnew(char **content);
+t_lists	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_lists **lst, t_lists *new);
 void	free_list(t_lists **list);
-int		ft_lstsize(t_lists *lst);
+
+/** creation_list.c */
+t_lists	*creation_list(char *str);
+void	check_quotes(char *str, int *i);
+
+/** write_array.c */
+char	**write_array(char *str, t_lists **list, t_flags *flag);
 
 #endif

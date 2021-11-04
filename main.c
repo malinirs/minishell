@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:33:16 by awoods            #+#    #+#             */
-/*   Updated: 2021/10/26 21:46:55 by                  ###   ########.fr       */
+/*   Updated: 2021/11/01 19:31:59 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,62 +20,19 @@ void	clear_list(t_lists **list)
 	temp = *list;
 	while (temp != NULL)
 	{
-		j = temp->number_str + 1;
+		j = temp->number_str;
 		while (--j >= 0)
 			free(temp->ptr[j]);
 		free(temp->ptr);
+		free(temp->str);
 		temp = temp->next;
 	}
 	free_list(list);
 }
 
-int	check_sign(char c)
-{
-	if (c == '|' || c == '>' || c == '<')
-		return (1);
-	return (0);
-}
-
-static t_lists	*creation_list(char *str)
-{
-	t_lists	*list;
-	t_lists	*new;
-	char	**ptr;
-	int		first;
-	int		last;
-	char	*temp1;
-
-	list = NULL;
-	new = NULL;
-	last = -1;
-	while (ft_strlen(str) > ++last)
-	{
-		first = last;
-		while (str[last++])
-			if (check_sign(str[last]))
-				break ;
-		temp1 = ft_substr(str, first, last - first);
-		ptr = ft_split(temp1, ' ');
-		printf("ptr = %s\n", ptr[0]);
-		new = ft_lstnew(ptr);
-		new->number_str = ft_check_nbr_str(temp1, ' ');
-		ft_lstadd_back(&list, new);
-
-		free(temp1);
-	}
-
-	new = list;
-	while (new != NULL)
-	{
-		printf("list->ptr = %s\n", new->ptr[0]);
-		new = new->next;
-	}
-	return (list);
-}
-
 char	*parsing(char *str, char **env)
 {
-	int				i;
+	int	i;
 	i = -1;
 
 	printf("str = %s\n", str);
@@ -96,6 +53,8 @@ int main(int argc, char **argv, char **env)
 	char	*str;
 	t_lists	*list;
 
+	t_lists	*new;
+
 	str = NULL;
 	list = NULL;
 	(void)argc;
@@ -103,10 +62,10 @@ int main(int argc, char **argv, char **env)
 
 	while (5)
 	{
-		if (str)
-			free(str);
-		if (list)
-			clear_list(&list);
+		//		if (str) /** как правильно зафришить str? */
+		//			free(str);
+//		if (list)
+//			clear_list(&list);
 		str = readline(MINI);
 		//		if (g_status == 130)
 		//		{
@@ -116,10 +75,22 @@ int main(int argc, char **argv, char **env)
 		if (!str)
 			str = ft_strdup("exit");
 		add_history(str);
-		str = parsing(str, env);
+
 		list = creation_list(str);
-//		free_list(&list);
-//		free(str);
+
+//		str = parsing(str, env);
+		printf("str out = %s\n", str);
+		//		list = creation_list_(str, 0, -1);
+
+
+		new = list;
+		while (new != NULL)
+		{
+			printf("list->str = %s ", new->str);
+			printf("%s\n", new->operation);
+			new = new->next;
+		}
+
 		/** Отдается в работу */
 	}
 }

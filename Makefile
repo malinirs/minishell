@@ -5,6 +5,8 @@ SRCS		= 	main.c \
                 pars_dollar.c \
                 pars_quotes.c \
                 utils_list_1.c \
+                creation_list.c \
+                write_array.c
 
 OBJS		=	$(patsubst %.c,%.o,$(SRCS))
 
