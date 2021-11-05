@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:33:16 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/01 19:31:59 by                  ###   ########.fr       */
+/*   Updated: 2021/11/05 17:02:43 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	clear_list(t_lists **list)
 			free(temp->ptr[j]);
 		free(temp->ptr);
 		free(temp->str);
+		free(temp->operation);
 		temp = temp->next;
 	}
 	free_list(list);
@@ -64,8 +65,8 @@ int main(int argc, char **argv, char **env)
 	{
 		//		if (str) /** как правильно зафришить str? */
 		//			free(str);
-//		if (list)
-//			clear_list(&list);
+		if (list)
+			clear_list(&list);
 		str = readline(MINI);
 		//		if (g_status == 130)
 		//		{
@@ -79,7 +80,7 @@ int main(int argc, char **argv, char **env)
 		list = creation_list(str);
 
 //		str = parsing(str, env);
-		printf("str out = %s\n", str);
+//		printf("str out = %s\n", str);
 		//		list = creation_list_(str, 0, -1);
 
 
