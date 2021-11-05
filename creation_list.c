@@ -12,9 +12,9 @@ void	check_quotes(char *str, int *i)
 	if (str[*i] == '\"')
 		while (str[++(*i)] != '\"' && str[*i])
 			;
-		else if (str[*i] == '\'')
-			while (str[++(*i)] != '\'' && str[*i])
-				;
+	else if (str[*i] == '\'')
+		while (str[++(*i)] != '\'' && str[*i])
+			;
 }
 
 static t_lists	*new_list_one(char *str, t_flags *flag, t_lists **list, int i)
@@ -48,22 +48,12 @@ static t_lists	*creation_array(t_lists **list, t_flags	*flag)
 {
 	t_lists	*temp;
 
-	int i;
-
 	temp = *list;
 	while (temp != NULL)
 	{
-		temp->ptr = write_array(temp->str, list, flag);
-
-		i = 0;
-		printf("ptr[%d] =", i);
-		while (temp->ptr[i])
-		{
-			printf(" |%s|", temp->ptr[i]);
-			i++;
-		}
-		printf("\n");
-
+		flag->start = 0;
+		temp->number_str = 1;
+		temp->ptr = write_array(temp->str, &temp, flag);
 		temp = temp->next;
 	}
 	return (*list);

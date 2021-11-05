@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-static char	*new_array(char *str, int i, t_flags *flag, int fl)
+static char	*new_array(char *str, int i, t_flags *flag)
 {
 	char	*temp;
 
-	temp = ft_substr(str, flag->start, i - flag->start - fl);
+	temp = ft_substr(str, flag->start, i - flag->start);
 	flag->start = i + 1;
 	return (temp);
 }
@@ -21,13 +21,7 @@ static char	**counting_memory(char *temp, char **ptr, t_lists **list)
 		ptr2[i] = ptr[i];
 	ptr2[i] = temp;
 	ptr2[i + 1] = NULL;
-//	i = n;
-//	if (ptr)
-//	{
-//		while (--i >= 0)
-//			free(ptr[i]);
-//	}
-//	(*list)->number_str = *n;
+	free(ptr);
 	return (ptr2);
 }
 
@@ -36,18 +30,16 @@ char	**write_array(char *str, t_lists **list, t_flags *flag)
 	int		i;
 	char	**ptr;
 	char	*temp;
-	int		fl;
 
 	ptr = NULL;
 	i = -1;
-	fl = 0;
 	while (++i <= (int)ft_strlen(str))
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 			check_quotes(str, &i);
 		else if (str[i] == ' ' || str[i] == '\0')
 		{
-			temp = new_array(str, i, flag, fl);
+			temp = new_array(str, i, flag);
 			if (ptr == NULL)
 			{
 				ptr = malloc(sizeof(char *) * ((*list)->number_str + 1));
@@ -63,7 +55,7 @@ char	**write_array(char *str, t_lists **list, t_flags *flag)
 		while (++i < (*list)->number_str)
 			printf(" |%s|", ptr[i]);
 		printf("\n");
-		printf("number_str = \n", (*list)->number_str);
+		printf("number_str = %d\n", (*list)->number_str);
 	return (ptr);
 }
 

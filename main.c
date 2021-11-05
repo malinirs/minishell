@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:33:16 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/05 17:02:43 by                  ###   ########.fr       */
+/*   Updated: 2021/11/05 18:58:52 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 void	clear_list(t_lists **list)
 {
 	t_lists	*temp;
-	int	j;
+	int		n;
 
 	temp = *list;
 	while (temp != NULL)
 	{
-		j = temp->number_str;
-		while (--j >= 0)
-			free(temp->ptr[j]);
+		n = temp->number_str;
+		while (n >= 0)
+		{
+			free(temp->ptr[n]);
+			n--;
+		}
 		free(temp->ptr);
 		free(temp->str);
 		free(temp->operation);
@@ -63,8 +66,8 @@ int main(int argc, char **argv, char **env)
 
 	while (5)
 	{
-		//		if (str) /** как правильно зафришить str? */
-		//			free(str);
+		if (str) /** как правильно зафришить str? */
+			free(str);
 		if (list)
 			clear_list(&list);
 		str = readline(MINI);
