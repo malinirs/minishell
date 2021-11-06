@@ -6,7 +6,8 @@ SRCS		= 	main.c \
                 pars_quotes.c \
                 utils_list_1.c \
                 creation_list.c \
-                write_array.c
+                write_array.c \
+                pre_parsing.c \
 
 OBJS		=	$(patsubst %.c,%.o,$(SRCS))
 
@@ -19,7 +20,7 @@ RDL			= -lreadline
 
 all:		$(NAME)
 
-%.o:		%.c
+%.o : %.c
 			$(CC) $(CFLAGS) -c -g $< -o $@ $(INCLUDE)
 
 $(NAME):	$(OBJS) $(OBJS_C)

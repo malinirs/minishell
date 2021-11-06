@@ -62,4 +62,7 @@ void	check_quotes(char *str, int *i);
 /** write_array.c */
 char	**write_array(char *str, t_lists **list, t_flags *flag);
 
+/** pre_parsing.c */
+void	pre_parsing(char **str);
+
 #endif

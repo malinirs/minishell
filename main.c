@@ -79,8 +79,9 @@ int main(int argc, char **argv, char **env)
 		if (!str)
 			str = ft_strdup("exit");
 		add_history(str);
-
+		pre_parsing(str);
 		list = creation_list(str);
+
 
 //		str = parsing(str, env);
 //		printf("str out = %s\n", str);
