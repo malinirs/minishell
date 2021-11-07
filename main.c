@@ -6,17 +6,19 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:33:16 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/05 18:58:52 by                  ###   ########.fr       */
+/*   Updated: 2021/11/07 21:06:09 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	clear_list(t_lists **list)
+void	clear_list(t_lists **list, char *str)
 {
 	t_lists	*temp;
 	int		n;
 
+	if (str)
+		free(str);
 	temp = *list;
 	while (temp != NULL)
 	{
@@ -66,10 +68,10 @@ int main(int argc, char **argv, char **env)
 
 	while (5)
 	{
-		if (str) /** как правильно зафришить str? */
-			free(str);
-		if (list)
-			clear_list(&list);
+//		if (str) /** как правильно зафришить str? */
+//			free(str);
+//		if (list)
+//			clear_list(&list);
 		str = readline(MINI);
 		//		if (g_status == 130)
 		//		{
@@ -79,14 +81,15 @@ int main(int argc, char **argv, char **env)
 		if (!str)
 			str = ft_strdup("exit");
 		add_history(str);
-		pre_parsing(str);
-		list = creation_list(str);
 
+
+
+
+		pre_parsing(&str); /** доработать одинарнвые ковычки */
+		list = creation_list(str);
 
 //		str = parsing(str, env);
 //		printf("str out = %s\n", str);
-		//		list = creation_list_(str, 0, -1);
-
 
 		new = list;
 		while (new != NULL)
@@ -96,6 +99,8 @@ int main(int argc, char **argv, char **env)
 			new = new->next;
 		}
 
+		if (str || list)
+			clear_list(&list, str);
 		/** Отдается в работу */
 	}
 }

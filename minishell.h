@@ -8,6 +8,7 @@
 # include "Libft/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+//# include <errno.h>
 
 # define MINI	"\033[32mMini$ \033[0m"
 
@@ -34,6 +35,7 @@ typedef struct s_flags
 {
 	bool			implementation; /** еще есть команды в str для выполнения*/
 	int				start; /** координата делителя для листов и **ptr */
+	int				code; /** код завершения программы */
 }				t_flags;
 
 int	number_str;
@@ -64,5 +66,13 @@ char	**write_array(char *str, t_lists **list, t_flags *flag);
 
 /** pre_parsing.c */
 void	pre_parsing(char **str);
+
+/** delete_space.c */
+char	*delete_space_top(char *str);
+void	delete_space_middle(char **str);
+char	*delete_space_bottom(char *str, int len);
+
+/** check_space_divider.c */
+char	*check_space_divider(char *str, int len);
 
 #endif

@@ -8,6 +8,8 @@ SRCS		= 	main.c \
                 creation_list.c \
                 write_array.c \
                 pre_parsing.c \
+                delete_space.c \
+                check_space_divider.c \
 
 OBJS		=	$(patsubst %.c,%.o,$(SRCS))
 
