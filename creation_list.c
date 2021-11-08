@@ -2,7 +2,7 @@
 
 static int	check_sign(char c)
 {
-	if (c == '|' || c == '>' || c == '<')
+	if (c == '>' || c == '<')
 		return (1);
 	return (0);
 }
@@ -72,6 +72,8 @@ t_lists	*creation_list(char *str)
 	{
 		if (str[i] == '\"' || str[i] == '\'')
 			check_quotes(str, &i);
+		else if (str[i] == '|')
+			list = new_list_one(str, &flag, &list, i);
 		else if (check_sign(str[i]) && str[i + 1] != '<' && str[i + 1] != '>')
 			list = new_list_one(str, &flag, &list, i);
 		else if (check_sign(str[i]) && (str[i + 1] == '<' || str[i + 1] == '>'))

@@ -14,96 +14,37 @@ int	check_redirect(char c)
 	return (0);
 }
 
-void	write_error_a(char *str, int i)
-{
-	write(2, "Mini: syntax error near unexpected token `", 42);
-	write(2, &str[i + 2], 1);
-	if (check_redirect(str[i + 3]) || check_pipe(str[i + 3]))
-		write(2, &str[i + 3], 1);
-	write(2, "'\n", 2);
-}
-
-void	write_error_b(char *str, int i)
-{
-	write(2, "Mini: syntax error near unexpected token `", 42);
-	write(2, &str[i + 2], 1);
-	if (check_pipe(str[i + 3]))
-		write(2, &str[i + 3], 1);
-	write(2, "'\n", 2);
-}
-
-void	write_error_c(char *str, int i)
-{
-	write(2, "Mini: syntax error near unexpected token `", 42);
-	write(2, &str[i + 2], 1);
-	if (check_redirect(str[i + 4]) || check_pipe(str[i + 4]))
-		write(2, &str[i + 4], 1);
-	write(2, "'\n", 2);
-}
-
-void	write_error_d(char *str, int i)
-{
-	write(2, "Mini: syntax error near unexpected token `", 42);
-	write(2, &str[i + 2], 1);
-	if (check_pipe(str[i + 3]))
-		write(2, &str[i + 3], 1);
-	write(2, "'\n", 2);
-}
-void	write_error_e(char *str, int i)
-{
-	write(2, "Mini: syntax error near unexpected token `", 42);
-	write(2, &str[i + 1], 1);
-	if (check_redirect(str[i + 2]))
-		write(2, &str[i + 2], 1);
-	write(2, "'\n", 2);
-}
-
 int	check_divider(char *str)
 {
 	int	i;
+	int	code;
 
 	i = 0;
+	code = 0;
 	while (str[i])
 	{
-		check_quotes(str, &i);
-		if ((str[i] == '>' && str[i + 1] == '>' && check_redirect(str[i + 2])) || \
-		((str[i] == '<' && str[i + 1] == '>') && check_redirect(str[i + 2])))
-		{
-			write_error_a(str, i);
-			return (258); /** 258 */
-		}
-		if ((str[i] == '>' && str[i + 1] == '>' && check_pipe(str[i + 2])) || \
-		(str[i] == '<' && str[i + 1] == '<' && check_pipe(str[i + 2])))
-		{
-			write_error_b(str, i);
-			return (258);
-		}
-		if (str[i] == '<' && str[i + 1] == '<' && check_redirect(str[i + 2]))
-		{
-			write_error_c(str, i);
-			return (258);
-		}
-//		if ((str[i] == '<' && str[i + 1] == '>') && check_redirect(str[i + 2]))
-//		{
-//			write_error_a(str, i);
-//			return (258);
-//		}
-		if ((str[i] == '<' && str[i + 1] == '>') && check_pipe(str[i + 2]))
-		{
-			write_error_d(str, i);
-			return (258);
-		}
-//		if ((str[i] == '>' && check_pipe(str[i + 1])) /** ??? */
-		if (str[i] == '>' && str[i + 1] == '<')
-		{
-			write_error_e(str, i);
-			return (258); /** 258 */
-		}
+		if (str[i] == '>' && str[i + 1] == '>')//  && str[i + 2] != ' ')
+			divider_right_right(str, ++i, &code);
+		else if (str[i] == '<' && str[i + 1] == '<')//  && str[i + 2] != ' ')
+			divider_left_left(str, ++i, &code);
+		else if (str[i] == '>')//  && str[i + 1] != ' ')
+			divider_right(str, i, &code);
+		else if (str[i] == '<')// && str[i + 1] != ' ')
+			divider_left(str, i, &code);
+		else if (str[i] == '|')
+			divider_pipe(str, i, &code);
 
-		/** ls >    > 1, ls >>    > 1*/
+		if (code != 0)
+			return (code);
 		i++;
 	}
-	return (0);
+	return (code);
+
+
+//		if ((str[i] == '>' && check_pipe(str[i + 1])) /** ??? */
+
+		/** ls >    > 1, ls >>    > 1*/
+
 }
 
 /** cat >| 1 */
@@ -123,5 +64,6 @@ void	pre_parsing(char **str)
 	if ((*str)[(int)ft_strlen(*str) - 1] == ' ')
 		*str = delete_space_bottom(*str, (int)ft_strlen(*str));
 	flag.code = check_divider(*str); /** если не 0, дальше не идем по программе*/
-	*str = check_space_divider(*str, (int)ft_strlen(*str));
+
+//	*str = check_space_divider(*str, (int)ft_strlen(*str));
 }

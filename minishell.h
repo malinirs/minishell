@@ -66,6 +66,8 @@ char	**write_array(char *str, t_lists **list, t_flags *flag);
 
 /** pre_parsing.c */
 void	pre_parsing(char **str);
+int	check_pipe(char c);
+int	check_redirect(char c);
 
 /** delete_space.c */
 char	*delete_space_top(char *str);
@@ -74,5 +76,12 @@ char	*delete_space_bottom(char *str, int len);
 
 /** check_space_divider.c */
 char	*check_space_divider(char *str, int len);
+
+/** divider.c */
+void	divider_right(char *str, int i, int *code);
+void	divider_left(char *str, int i, int *code);
+void	divider_right_right(char *str, int i, int *code);
+void	divider_left_left(char *str, int i, int *code);
+void	divider_pipe(char *str, int i, int *code);
 
 #endif
