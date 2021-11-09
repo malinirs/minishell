@@ -15,16 +15,8 @@ static void	delete_space(char **ptr, int i, int space)
 	char	*temp3;
 
 	temp1 = ft_substr(*ptr, 0, i + 1);
-	printf("temp1 = %s\n", temp1);
-
-	int a = i + space;
-	int b = (int)ft_strlen(*ptr) - (i + space);
 	temp2 = ft_substr(*ptr, i + space, (int)ft_strlen(*ptr) - (i + space));
-	printf("temp2 = %s\n", temp2);
-
 	temp3 = ft_strjoin(temp1, temp2);
-	printf("temp3 = %s\n", temp3);
-
 	free(temp1);
 	free(temp2);
 	free(*ptr);

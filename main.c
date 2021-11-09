@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:33:16 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/07 21:06:09 by                  ###   ########.fr       */
+/*   Updated: 2021/11/09 17:24:32 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,6 @@ void	clear_list(t_lists **list, char *str)
 	free_list(list);
 }
 
-char	*parsing(char *str, char **env)
-{
-	int	i;
-	i = -1;
-
-	printf("str = %s\n", str);
-	while (str[++i])
-	{
-		if (str[i] == '\'')
-			str = pars_single_quotes(str, &i);
-		if (str[i] == '$')
-			str = pars_dollar(str, &i, env);
-		if (str[i] == '\"')
-			str = pars_double_quotes(str, &i, env);
-	}
-	return (str);
-}
-
 int main(int argc, char **argv, char **env)
 {
 	char	*str;
@@ -81,15 +63,8 @@ int main(int argc, char **argv, char **env)
 		if (!str)
 			str = ft_strdup("exit");
 		add_history(str);
-
-
-
-
-		pre_parsing(&str); /** доработать одинарнвые ковычки */
-		list = creation_list(str);
-
-//		str = parsing(str, env);
-//		printf("str out = %s\n", str);
+		if (pre_parsing(&str) == 0)
+			list = creation_list(str, env);
 
 		new = list;
 		while (new != NULL)

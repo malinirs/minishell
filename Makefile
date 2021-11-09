@@ -11,6 +11,9 @@ SRCS		= 	main.c \
                 delete_space.c \
                 check_space_divider.c \
                 divider.c \
+                write_error.c \
+                check_symbol.c \
+                parsing.c \
 
 OBJS		=	$(patsubst %.c,%.o,$(SRCS))
 

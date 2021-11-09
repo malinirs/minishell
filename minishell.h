@@ -36,6 +36,8 @@ typedef struct s_flags
 	bool			implementation; /** еще есть команды в str для выполнения*/
 	int				start; /** координата делителя для листов и **ptr */
 	int				code; /** код завершения программы */
+	int				quote;
+	int				flag;
 }				t_flags;
 
 int	number_str;
@@ -58,16 +60,13 @@ void	ft_lstadd_back(t_lists **lst, t_lists *new);
 void	free_list(t_lists **list);
 
 /** creation_list.c */
-t_lists	*creation_list(char *str);
-void	check_quotes(char *str, int *i);
+t_lists	*creation_list(char *str, char **env);
 
 /** write_array.c */
 char	**write_array(char *str, t_lists **list, t_flags *flag);
 
 /** pre_parsing.c */
-void	pre_parsing(char **str);
-int	check_pipe(char c);
-int	check_redirect(char c);
+int	pre_parsing(char **str);
 
 /** delete_space.c */
 char	*delete_space_top(char *str);
@@ -83,5 +82,20 @@ void	divider_left(char *str, int i, int *code);
 void	divider_right_right(char *str, int i, int *code);
 void	divider_left_left(char *str, int i, int *code);
 void	divider_pipe(char *str, int i, int *code);
+
+/** write_error.c */
+void	write_error_a(char *str, int i, int *code);
+void	write_error_b(char *str, int i, int *code);
+void	write_error_c(char *str, int i, int *code);
+void	write_error_d(char *str, int i, int *code);
+int		write_error_e(char c);
+
+/** check_symbol.c */
+void	check_quotes(char *str, int *i);
+int	check_pipe(char c);
+int	check_redirect(char c);
+
+/** parsing.c */
+void	send_parsing(t_lists **list, char **env);
 
 #endif

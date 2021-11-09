@@ -1,22 +1,5 @@
 #include "minishell.h"
 
-static int	check_sign(char c)
-{
-	if (c == '>' || c == '<')
-		return (1);
-	return (0);
-}
-
-void	check_quotes(char *str, int *i)
-{
-	if (str[*i] == '\"')
-		while (str[++(*i)] != '\"' && str[*i])
-			;
-	else if (str[*i] == '\'')
-		while (str[++(*i)] != '\'' && str[*i])
-			;
-}
-
 static t_lists	*new_list_one(char *str, t_flags *flag, t_lists **list, int i)
 {
 	char	*temp;
@@ -44,7 +27,7 @@ static t_lists	*new_list_two(char *str, t_flags *flag, t_lists **list, int *i)
 	return (*list);
 }
 
-static t_lists	*creation_array(t_lists **list, t_flags	*flag)
+static void	creation_array(t_lists **list, t_flags	*flag)
 {
 	t_lists	*temp;
 
@@ -56,10 +39,9 @@ static t_lists	*creation_array(t_lists **list, t_flags	*flag)
 		temp->ptr = write_array(temp->str, &temp, flag);
 		temp = temp->next;
 	}
-	return (*list);
 }
 
-t_lists	*creation_list(char *str)
+t_lists	*creation_list(char *str, char **env)
 {
 	int		i;
 	t_lists	*list;
@@ -74,12 +56,13 @@ t_lists	*creation_list(char *str)
 			check_quotes(str, &i);
 		else if (str[i] == '|')
 			list = new_list_one(str, &flag, &list, i);
-		else if (check_sign(str[i]) && str[i + 1] != '<' && str[i + 1] != '>')
+		else if (check_redirect(str[i]) && str[i + 1] != '<' && str[i + 1] != '>')
 			list = new_list_one(str, &flag, &list, i);
-		else if (check_sign(str[i]) && (str[i + 1] == '<' || str[i + 1] == '>'))
+		else if (check_redirect(str[i]) && (str[i + 1] == '<' || str[i + 1] == '>'))
 			list = new_list_two(str, &flag, &list, &i);
 	}
 	list = new_list_one(str, &flag, &list, i);
-	list = creation_array(&list, &flag);
+	creation_array(&list, &flag);
+	send_parsing(&list, env);
 	return (list);
 }
