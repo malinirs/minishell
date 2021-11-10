@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   delete_space.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 13:14:45 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:14:48 by awoods           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int count_space(int *i, int space, char *ptr)
+static int	count_space(int *i, int space, char *ptr)
 {
 	while (ptr[(*i)++] == ' ')
 		space++;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   creation_list.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 13:13:53 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:13:55 by awoods           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_lists	*new_list_one(char *str, t_flags *flag, t_lists **list, int i)
@@ -56,9 +68,11 @@ t_lists	*creation_list(char *str, char **env)
 			check_quotes(str, &i);
 		else if (str[i] == '|')
 			list = new_list_one(str, &flag, &list, i);
-		else if (check_redirect(str[i]) && str[i + 1] != '<' && str[i + 1] != '>')
+		else if (check_redirect(str[i]) && str[i + 1] != '<' && \
+		str[i + 1] != '>')
 			list = new_list_one(str, &flag, &list, i);
-		else if (check_redirect(str[i]) && (str[i + 1] == '<' || str[i + 1] == '>'))
+		else if (check_redirect(str[i]) && (str[i + 1] == '<' || \
+		str[i + 1] == '>'))
 			list = new_list_two(str, &flag, &list, &i);
 	}
 	list = new_list_one(str, &flag, &list, i);

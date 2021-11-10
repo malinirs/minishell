@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   write_array.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 13:14:06 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:14:10 by awoods           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*new_array(char *str, int i, t_flags *flag)
@@ -50,19 +62,5 @@ char	**write_array(char *str, t_lists **list, t_flags *flag)
 				ptr = counting_memory(temp, ptr, list);
 		}
 	}
-		printf("ptr =");
-		i = -1;
-		while (++i < (*list)->number_str)
-			printf(" |%s|", ptr[i]);
-		printf("\n");
-		printf("number_str = %d\n", (*list)->number_str);
 	return (ptr);
 }
-
-
-
-//	printf("ptr =");
-//	i = -1;
-//	while (ptr[++i])
-//		printf(" |%s|", ptr[i]);
-//	printf("\n");

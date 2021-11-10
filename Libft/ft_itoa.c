@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	*ft_check(int	n, int	znak)
+char	*ft_check(int n, int znak)
 {
 	char	*str;
 	int		len;
@@ -40,7 +40,7 @@ char	*ft_check(int	n, int	znak)
 	return (str);
 }
 
-char	*ft_itoa(int	n)
+char	*ft_itoa(int n)
 {
 	char	*str;
 	int		znak;

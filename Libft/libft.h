@@ -6,7 +6,7 @@
 /*   By: awoods <awoods@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 11:56:09 by awoods            #+#    #+#             */
-/*   Updated: 2021/10/20 15:07:41 by                  ###   ########.fr       */
+/*   Updated: 2021/10/29 22:06:53 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-char	*ft_substr(char const *s, int start, int len);
+char	*ft_substr(char *s, int start, int len);
 char	*ft_strjoin(char const *s1, char const	*s2);
 char	*ft_strtrim(char const *s1, char const	*set);
 char	*ft_itoa(int	n);

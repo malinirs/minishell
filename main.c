@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 16:33:16 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/09 17:24:32 by                  ###   ########.fr       */
+/*   Created: 2021/11/10 13:10:43 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:44:09 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,19 @@ void	clear_list(t_lists **list, char *str)
 	free_list(list);
 }
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	char	*str;
 	t_lists	*list;
-
 	t_lists	*new;
 
 	str = NULL;
 	list = NULL;
 	(void)argc;
 	(void)argv;
-
 	while (5)
 	{
-//		if (str) /** как правильно зафришить str? */
-//			free(str);
-//		if (list)
-//			clear_list(&list);
 		str = readline(MINI);
-		//		if (g_status == 130)
-		//		{
-		//			msh.old_status = 1;
-		//			g_status = 0;
-		//		}
 		if (!str)
 			str = ft_strdup("exit");
 		add_history(str);
@@ -69,8 +58,11 @@ int main(int argc, char **argv, char **env)
 		new = list;
 		while (new != NULL)
 		{
-			printf("list->str = %s ", new->str);
-			printf("%s\n", new->operation);
+			printf("list->ptr =");
+			int i = -1;
+			while (new->number_str > ++i)
+				printf(" |%s|", new->ptr[i]);
+			printf("    operation = %s\n", new->operation);
 			new = new->next;
 		}
 

@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 16:32:10 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/06 20:09:41 by awoods           ###   ########.fr       */
+/*   Updated: 2021/11/10 13:25:44 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ static char	*insertion_key(char *str, char *key, int first, int last)
 	temp3 = ft_strjoin(temp2, temp1);
 	free(temp1);
 	free(temp2);
-
-	printf("dollar_vs = %s\n", temp3);
-
 	return (temp3);
 }
 
@@ -42,9 +39,6 @@ static char	*delete_key(char *str, int first, int last)
 	temp3 = ft_strjoin(temp1, temp2);
 	free(temp1);
 	free(temp2);
-
-	printf("dollar_de = %s\n", temp3);
-
 	return (temp3);
 }
 
@@ -64,7 +58,7 @@ static char	*search_key(char **env, char *temp)
 			while (env[i][j] != '=' && env[i][j])
 				j++;
 			temp2 = ft_substr(env[i], 0, j);
-			if (ft_strcmp(temp, temp2) == 0) /** строки совпадают, если == 0 */
+			if (ft_strcmp(temp, temp2) == 0)
 				break ;
 			free(temp2);
 		}
@@ -88,13 +82,13 @@ char	*pars_dollar(char *str, int *i, char **env)
 {
 	int		j;
 	char	*key;
-	char	*meaning; /** значение */
+	char	*meaning;
 	char	*temp;
 
-	j = *i; /** координата начала */
+	j = *i;
 	while (str[++(*i)])
 		if (!check_key(str[*i]))
-			break ; /** координата конца */
+			break ;
 	if (*i == j + 1)
 		return (str);
 	if (j - *i == 1)

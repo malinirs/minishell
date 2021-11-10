@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_space_divider.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 13:14:59 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:15:03 by awoods           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*delete_space_before_divider(char *str, int i, int len)
@@ -38,7 +50,7 @@ char	*check_space_divider(char *str, int len)
 	while (str[i])
 	{
 		if (str[i] == ' ' && (str[i + 1] == '>' || str[i + 1] == '<' || \
-		str[i + 1]	== '|'))
+		str[i + 1] == '|'))
 			str = delete_space_before_divider(str, i, len);
 		if ((str[i] == '>' || str[i] == '<' || str[i] == '|') && \
 		str[i + 1] == ' ')

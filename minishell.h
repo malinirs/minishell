@@ -8,7 +8,6 @@
 # include "Libft/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-//# include <errno.h>
 
 # define MINI	"\033[32mMini$ \033[0m"
 
@@ -21,26 +20,14 @@ typedef struct s_lists
 	int				number_str;
 	char			*operation; /** Redirects and Pipe*/
 }				t_lists;
-/** actions_file:
- * 0 - nothing
- * 1 - >
- * 2 - >>
- * 3 - <
- * 4 - <<
- * 5 - |   */
-
-
 
 typedef struct s_flags
 {
-	bool			implementation; /** еще есть команды в str для выполнения*/
 	int				start; /** координата делителя для листов и **ptr */
-	int				code; /** код завершения программы */
+	int				code; /** код завершения программы в парсере*/
 	int				quote;
 	int				flag;
 }				t_flags;
-
-int	number_str;
 
 /** utils_1.c */
 int		ft_isalnum(int c);

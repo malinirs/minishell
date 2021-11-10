@@ -6,13 +6,13 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 21:37:09 by awoods            #+#    #+#             */
-/*   Updated: 2021/04/25 21:37:11 by awoods           ###   ########.fr       */
+/*   Updated: 2021/11/10 13:39:15 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ft_malloc_and_free(char **str, size_t	i, size_t	j, size_t	temp)
+static char	*ft_malloc_and_free(char **str, size_t i, size_t j, size_t temp)
 {
 	str[j] = malloc(sizeof(char) * (i - temp + 1));
 	if (!*str)
@@ -28,7 +28,7 @@ static char	*ft_malloc_and_free(char **str, size_t	i, size_t	j, size_t	temp)
 	return (*str);
 }
 
-size_t 	ft_check_nbr_str(char const	*s, char	c)
+size_t	ft_check_nbr_str(char const *s, char c)
 {
 	size_t	i;
 	size_t	nb_str;
@@ -52,8 +52,8 @@ size_t 	ft_check_nbr_str(char const	*s, char	c)
 	return (nb_str);
 }
 
-static void	ft_nbr_index_and_copy(char const	*s, char	c, char	**str,
-							  size_t	nb_str)
+static void	ft_nbr_index_and_copy(char const *s, char c, char **str, size_t
+nb_str)
 {
 	size_t	i;
 	size_t	j;

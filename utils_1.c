@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 16:33:49 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/06 20:09:41 by awoods           ###   ########.fr       */
+/*   Created: 2021/11/10 13:12:07 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:32:57 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
-
 //** находит первое вхождение строковой needle с нулевым символом в конце
 // * в haystack строки с нулевым символом в конце */
 char	*ft_strstr(char *haystack, char *needle)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	if (needle[0] == '\0')
 		return (haystack);
@@ -48,10 +47,10 @@ char	*ft_strstr(char *haystack, char *needle)
 
 int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
 		i++;
-	return (s1[i] - s2[i]);;
+	return (s1[i] - s2[i]);
 }

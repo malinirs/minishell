@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 13:15:57 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:31:21 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*parsing(char *str, char **env)
@@ -5,8 +17,6 @@ char	*parsing(char *str, char **env)
 	int	i;
 
 	i = -1;
-
-	printf("str = %s\n", str);
 	while (str[++i])
 	{
 		if (str[i] == '\'')
@@ -16,7 +26,6 @@ char	*parsing(char *str, char **env)
 		if (str[i] == '\"')
 			str = pars_double_quotes(str, &i, env);
 	}
-	printf("str finish = %s\n", str);
 	return (str);
 }
 

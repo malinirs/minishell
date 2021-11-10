@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pre_parsing.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/10 13:14:26 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/10 13:14:30 by awoods           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_divider(char *str, int i, int code, char c)
@@ -37,8 +49,7 @@ int	pre_parsing(char **str)
 	delete_space_middle(str);
 	if ((*str)[(int)ft_strlen(*str) - 1] == ' ')
 		*str = delete_space_bottom(*str, (int)ft_strlen(*str));
-	flag.code = check_divider(*str, 0, 0, ' '); /** если не 0, дальше не идем по
- * программе*/
+	flag.code = check_divider(*str, 0, 0, ' ');
 	if (flag.code != 0)
 		return (flag.code);
 	*str = check_space_divider(*str, (int)ft_strlen(*str));
