@@ -1,11 +1,17 @@
 #ifndef MINISHELL_H
-# define MINISHELL_H
+#define MINISHELL_H
 
-# include <stdio.h>
-# include <stdlib.h>
+#include "Libft/libft.h"
 # include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <limits.h>
+# include <string.h>
+# include <signal.h>
+# include <errno.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 # include <stdbool.h>
-# include "Libft/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
 
@@ -14,10 +20,10 @@
 typedef struct s_lists
 {
 	char			*str;
-	char			**ptr;
+	char			**ptr; /**argv*/
 	struct s_lists	*next;
 	int				end_code; /** termination code - код завершения. Изменяется при выведении ошибки */
-	int				number_str;
+	int				number_str;/**количество рагументов*/
 	char			*operation; /** Redirects and Pipe*/
 }				t_lists;
 
@@ -28,6 +34,55 @@ typedef struct s_flags
 	int				quote;
 	int				flag;
 }				t_flags;
+
+
+
+int		nav_cmd(char **arg, char ***env, t_lists new);
+void	clear_list(t_lists **list, char *str);
+
+/**cmd_utils*/
+int	print_errno(void);
+
+/**cmd_pwd*/
+int	cmd_pwd(char **arg, char **env) ;
+
+/**cmd_echo*/
+int	cmd_echo(char **arg, char **env);
+
+/**init_env*/
+void	init_env(char ***env, char **envp);
+int	cmd_env(char **arg, char **env);
+
+/**cmd_export*/
+int	cmd_export(char **arg, char **env);
+int		equals(char *str);
+void	sort_arg(char **env);
+void	replace_var(char *arg, char **env);
+
+/**cmd_unset*/
+int	cmd_unset(char **arg, char **env);
+
+/**cmd_cd*/
+int	cmd_cd(char **arg, char **env);
+int	new_work_directory(char **arg, char **env);
+int	new_directory(char *home, char **env);
+int	set_new_pwd(char **env);
+int	set_new_oldpwd(char *pwd_old, char **env);
+
+/**cd_utils*/
+char *find_home_oldpwd(char **env, char *str);
+int	check_to_oldpwd(char **env);
+int	help_change_dir(char *oldpwd, char *home, char **env);
+int	chdir_error(char *dir);
+
+/**cmd_exit*/
+int	cmd_exit(t_lists *new, char **env);
+
+/**signal*/
+void	signal_d(void);
+void	signal_c(int sig);
+void	signal_ign(void);
+void	signal_dfl(void);
 
 /** utils_1.c */
 int		ft_isalnum(int c);
@@ -45,6 +100,7 @@ char	*pars_double_quotes(char *str, int *i, char **env);
 t_lists	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_lists **lst, t_lists *new);
 void	free_list(t_lists **list);
+int	ft_lstsize(t_lists *lst);
 
 /** creation_list.c */
 t_lists	*creation_list(char *str, char **env);
@@ -84,5 +140,11 @@ int	check_redirect(char c);
 
 /** parsing.c */
 void	send_parsing(t_lists **list, char **env);
+
+
+
+
+/** main_job.c */
+void	main_job(t_lists *list, char **env, int x);
 
 #endif

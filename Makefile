@@ -14,6 +14,20 @@ SRCS		= 	main.c \
                 write_error.c \
                 check_symbol.c \
                 parsing.c \
+				init_env.c \
+				cmd_cd.c \
+				cd_utils.c \
+				cmd_echo.c \
+				cmd_exit.c \
+				cmd_export.c \
+				export_sort.c \
+				cmd_pwd.c \
+				cmd_unset.c \
+				cmd_utils.c \
+				signal.c \
+
+				main_job \
+
 
 OBJS		=	$(patsubst %.c,%.o,$(SRCS))
 
