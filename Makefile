@@ -25,8 +25,9 @@ SRCS		= 	main.c \
 				cmd_unset.c \
 				cmd_utils.c \
 				signal.c \
+				main_job.c \
+				get_next_line.c \
 
-				main_job \
 
 
 OBJS		=	$(patsubst %.c,%.o,$(SRCS))

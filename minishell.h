@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include "Libft/libft.h"
+# include "Libft/libft.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -11,11 +11,12 @@
 # include <errno.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <stdbool.h>
+# include <sys/fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
 # define MINI	"\033[32mMini$ \033[0m"
+# define BUFFER_SIZE 1
 
 typedef struct s_lists
 {
@@ -35,9 +36,56 @@ typedef struct s_flags
 	int				flag;
 }				t_flags;
 
+typedef struct s_env
+{
+	int				vision;
+	char			*name;
+	char			*full;
+	struct s_env	*next;
+}					t_env;
+
+typedef struct s_commands
+{
+	int					num;
+	char				**full_cmd;
+	int					fPipeIn;
+	int					fPipeOut;
+	char				*fRedir;
+	char				fPoint;
+	char				*stopWord;
+	int					redirFlag;
+	int					fdOut;
+	int					fdIn;
+	int					pipe_heredoc[2];
+	int					check_heredoc;
+	struct s_commands	*next;
+}						t_commands;
+
+typedef struct s_mini
+{
+	int			quot;
+	int			num;
+	int			args;
+	int			count_cmd;
+	int			ff_exit;
+	int			fakeHD;
+	int			lastCMD;
+	int			fdH;
+	int			**dd;
+	char		*cmd;
+	char		*declare;
+	char		**env;
+	char		**env_exp;
+	t_commands	*cmdlist;
+	t_commands	*always1st;
+	t_commands	*tmplist;
+	t_env		*envList;
+	t_env		*env1st;
+	t_env		*tmpEnv;
+	pid_t		pid;
+}				t_mini;
 
 
-int		nav_cmd(char **arg, char ***env, t_lists new);
 void	clear_list(t_lists **list, char *str);
 
 /**cmd_utils*/
@@ -146,5 +194,12 @@ void	send_parsing(t_lists **list, char **env);
 
 /** main_job.c */
 void	main_job(t_lists *list, char **env, int x);
+void nav_cmd(char ***env, t_lists *new);
+
+
+int	get_next_line(int fd, char **line);
+
+
+
 
 #endif

@@ -1,59 +1,70 @@
 #include "minishell.h"
 
-void	final_output(t_lists *list, char **env, int x)
+void	adding_command(char	**path, char *str)
 {
-
-
-}
-
-void	execution_program_builtins(char **ptr, char **env)
-{
-
-}
-
-char	**search_and_split(char **env)
-{
+	int		i;
 	char	*temp;
+
+	i = -1;
+	while (path[++i])
+	{
+		temp = ft_strjoin(path[i], "/");
+		free(path[i]);
+		path[i] = ft_strjoin(temp, str);
+		free(temp);
+	}
+}
+
+char	*search_and_split(char **env, char *str)
+{
 	char	**path;
 	int		i;
+	char	*temp;
 
 	i = -1;
 	while (env[++i])
-		if (!ft_strcmp("PATH=", env[i]))
-			temp = env[i];
-	path = ft_split(temp, ':');
-
-	write(1, "QWERTY", 7);
-
-	return (path);
-}
-
-void	execution_program(char **ptr, char **env)
-{
-	char	**path;
-
-	path = search_and_split(env);
-
-	printf("path =");
-	int	i = -1;
+		if (!ft_strncmp("PATH=", env[i], 5))
+			break ;
+	path = ft_split(env[i], ':');
+	temp = ft_substr(path[0], 5, ft_strlen(path[0]) - 5);
+	free(path[0]);
+	path[0] = temp;
+	adding_command(path, str);
+	i = -1;
 	while (path[++i])
-		printf(" |%s|", path);
-	printf("\n");
-
+		if (!access(path[i], 1))
+			break ;
+	if (path[i] == NULL)
+	{
+		write (2, str, ft_strlen(str));
+		write (2, ": command not found\n", 20);
+		exit (127);
+	}
+	return (path[i]);
 }
 
 void	output(t_lists *list, char **env)
 {
-	if (!ft_strcmp("echo", list->ptr[0] || \
+	char	*path;
+
+	printf("list->ptr[0] = %s\n", list->ptr[0]);
+	if (!ft_strcmp("echo", list->ptr[0]) || \
 	!ft_strcmp("pwd", list->ptr[0]) || \
 	!ft_strcmp("env", list->ptr[0]) || \
 	!ft_strcmp("export", list->ptr[0]) || \
 	!ft_strcmp("unset", list->ptr[0]) || \
 	!ft_strcmp("exit", list->ptr[0]) || \
-	!ft_strcmp("cd", list->ptr[0])))
-		execution_program_builtins(list->ptr, env);
+	!ft_strcmp("cd", list->ptr[0]))
+		nav_cmd(&env, list);
 	else
-		execution_program(list->ptr, env);
+	{
+		path = search_and_split(env, list->ptr[0]);
+		printf("ASS\n");
+		execve(path, list->ptr, env);
+		write (2, list->ptr[0], ft_strlen(list->ptr[0]));
+		write (2, ": command not found\n", 20);
+		exit(127);
+	}
 }
 
 int	**memory_allocation(int x)
@@ -67,6 +78,18 @@ int	**memory_allocation(int x)
 		fd[i] = malloc(sizeof(int) * 2);
 	return (fd);
 }
+
+//void	write_in_file(t_lists *list, int fd0)
+//{
+//	int	fdOpen;
+//
+//	if (list->operation[1] == '>')
+//		fdOpen = open(list->next->ptr[0], O_WRONLY | O_CREAT, 0644);
+//	else
+//		fdOpen = open(list->next->ptr[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+//
+//	close(fdOpen);
+//}
 
 void	main_job(t_lists *list, char **env, int x)
 {
@@ -86,44 +109,71 @@ void	main_job(t_lists *list, char **env, int x)
 			{
 				close(fd[i][1]);
 				dup2(fd[i - 1][0], 0);
-					/** прочесть из fd */
 			}
-			else if (!fd[i - 1][0])  // (i == 0)
+			else if (i == 0)
 			{
 				close(fd[i][0]);
 				dup2(fd[i][1], 1);
-				/** прочесть с экрана
-				записать в fd */
 			}
 			else
 			{
 				close(fd[i][0]);
 				dup2(fd[i - 1][0], 0);
 				dup2(fd[i][1], 1);
-				/** прочитать из fd[0]
-				записать в fd[1] */
 			}
 			output(list, env);
 		}
 		else
 		{
-//			wait();
-//			текстовый файл = fd[i][1]); //как вывести? как узнать, сколько там
-			// символов?
+//			output(list, env);
 
-			/** вывести на экран, если не нужно записать в файл
-			иначе запустить программу, кот записывает в файл
-			закрыть fd */
+//			if (list->operation[0] == '>')
+//			{
+//				if (i == 0)
+//					write_in_file(list, fd[i][0]);
+//				else
+//					write_in_file(list, fd[i - 1][0]);
+//			}
+
+		wait(NULL);
+
+//		char *line;
+//		get_next_line(fd[i][0], &line);
+//		printf("%s\n", line);
+//		while (get_next_line(fd[i][0], &line))
+//			printf("%s\n", line);
+//		printf("%s\n", line);
+
+
 			if (i > 0)
 				close(fd[i - 1][0]);
 			close(fd[i][1]);
 			list = list->next;
 		}
 	}
-	final_output(list, env, x);
+
+
+//	char *line;
+//	while (get_next_line(fd[0][0], &line))
+//		printf("%s\n", line);
+//	printf("%s\n", line);
+
+
 	close(fd[--i][0]);
 	/** free fd */
 }
 
 //fd2 = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644); >
 //fd2 = open(argv[argc - 1], O_WRONLY | O_CREAT, 0644); >>
+
+//int 	main(void)
+//{
+//	char *line;
+//	int fd;
+//
+//	fd = open("text.txt", O_RDONLY);
+//	while (get_next_line(fd, &line))
+//		printf("%s\n", line);
+//	printf("%s\n", line);
+//	return (0);
+//}

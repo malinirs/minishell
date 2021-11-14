@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 13:10:43 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/12 18:59:02 by                  ###   ########.fr       */
+/*   Updated: 2021/11/14 17:53:42 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,22 @@ int	number_of_Redirects_and_Pipe(t_lists *list)
 	return (count);
 }
 
-int nav_cmd(char **arg, char ***env, t_lists new)
+void nav_cmd(char ***env, t_lists *new)
 {
-	int i;
-
-	i = 0;
-	if (arg[i])
-	{
-		if(!ft_strcmp("pwd", arg[i]))
-			new.end_code = cmd_pwd(arg, *env);
-		if(!ft_strcmp("echo -n", arg[i]) || !ft_strcmp("echo", arg[i]))
-			new.end_code = cmd_echo(arg, *env);
-		if (!ft_strcmp("env", arg[i]))
-			new.end_code = cmd_env(arg, *env);
-		if (!ft_strcmp("export", arg[i]))
-			new.end_code = cmd_export(arg, *env);
-		if (!ft_strcmp("unset", arg[i]))
-			new.end_code = cmd_unset(arg, *env);
-		if (!ft_strcmp("exit", arg[i]))
-			new.end_code = cmd_exit(&new, *env);
-		if (!ft_strcmp("cd", arg[i]))
-			new.end_code = cmd_cd(arg, *env);
-	}
-	return(new.end_code);
+		if(!ft_strcmp("pwd", new->ptr[0]))
+			new->end_code = cmd_pwd(new->ptr, *env);
+		if(!ft_strcmp("echo", new->ptr[0]))
+			new->end_code = cmd_echo(new->ptr, *env);
+		if (!ft_strcmp("env", new->ptr[0]))
+			new->end_code = cmd_env(new->ptr, *env);
+		if (!ft_strcmp("export", new->ptr[0]))
+			new->end_code = cmd_export(new->ptr, *env);
+		if (!ft_strcmp("unset", new->ptr[0]))
+			new->end_code = cmd_unset(new->ptr, *env);
+		if (!ft_strcmp("exit", new->ptr[0]))
+			new->end_code = cmd_exit(&new, *env);
+		if (!ft_strcmp("cd", new->ptr[0]))
+			new->end_code = cmd_cd(new->ptr, *env);
 }
 
 void	clear_list(t_lists **list, char *str)
@@ -110,9 +103,9 @@ int	main(int argc, char **argv, char **envp)
 			new = new->next;
 		}
 
-		main_job(list, env, ft_lstsize(list));
 
-		nav_cmd(list->ptr, &env, *list);
+		main_job(list, env, ft_lstsize(list));
+//		nav_cmd(list->ptr, &env, *list);
 
 		if (str || list)
 			clear_list(&list, str);
