@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 13:10:43 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/15 17:22:34 by                  ###   ########.fr       */
+/*   Updated: 2021/11/15 20:36:44 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ int	number_of_Redirects_and_Pipe(t_lists *list)
 void nav_cmd(char ***env, t_lists *new, int flag)
 {
 		if(!ft_strcmp("pwd", new->ptr[0]))
-			new->end_code = cmd_pwd(new->ptr, *env);
+			g_status = cmd_pwd(new->ptr, *env);
 		else if(!ft_strcmp("echo", new->ptr[0]))
-			new->end_code = cmd_echo(new->ptr, *env);
+			g_status = cmd_echo(new->ptr);
 		else if (!ft_strcmp("env", new->ptr[0]))
-			new->end_code = cmd_env(new->ptr, *env);
+			g_status = cmd_env(new->ptr, *env);
 		else if (!ft_strcmp("export", new->ptr[0]))
-			new->end_code = cmd_export(new->ptr, *env);
+			g_status = cmd_export(new->ptr, *env);
 		else if (!ft_strcmp("unset", new->ptr[0]))
-			new->end_code = cmd_unset(new->ptr, *env);
+			g_status = cmd_unset(new->ptr, *env);
 		else if (!ft_strcmp("exit", new->ptr[0]))
-			new->end_code = cmd_exit(new, *env);
+			g_status = cmd_exit(new, *env);
 		else if (!ft_strcmp("cd", new->ptr[0]))
-			new->end_code = cmd_cd(new->ptr, *env);
+			g_status = cmd_cd(new->ptr, *env);
 		if (flag == 1)
 			if (new->next->operation[0] == '|')
 				return ;
@@ -105,7 +105,10 @@ int	main(int argc, char **argv, char **envp)
 			signal_d();
 		add_history(str);
 		if (pre_parsing(&str) == 0)
+		{
 			list = creation_list(str, env);
+			main_job(&list, env, ft_lstsize(list));
+		}
 
 		new = list;
 		while (new != NULL)
@@ -119,7 +122,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 
 
-		main_job(&list, env, ft_lstsize(list));
 		if (str || list)
 			clear_list(&list, str);
 

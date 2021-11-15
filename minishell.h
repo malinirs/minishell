@@ -39,56 +39,6 @@ typedef struct s_flags
 	int				flag;
 }				t_flags;
 
-typedef struct s_env
-{
-	int				vision;
-	char			*name;
-	char			*full;
-	struct s_env	*next;
-}					t_env;
-
-typedef struct s_commands
-{
-	int					num;
-	char				**full_cmd;
-	int					fPipeIn;
-	int					fPipeOut;
-	char				*fRedir;
-	char				fPoint;
-	char				*stopWord;
-	int					redirFlag;
-	int					fdOut;
-	int					fdIn;
-	int					pipe_heredoc[2];
-	int					check_heredoc;
-	struct s_commands	*next;
-}						t_commands;
-
-typedef struct s_mini
-{
-	int			quot;
-	int			num;
-	int			args;
-	int			count_cmd;
-	int			ff_exit;
-	int			fakeHD;
-	int			lastCMD;
-	int			fdH;
-	int			**dd;
-	char		*cmd;
-	char		*declare;
-	char		**env;
-	char		**env_exp;
-	t_commands	*cmdlist;
-	t_commands	*always1st;
-	t_commands	*tmplist;
-	t_env		*envList;
-	t_env		*env1st;
-	t_env		*tmpEnv;
-	pid_t		pid;
-}				t_mini;
-
-
 void	clear_list(t_lists **list, char *str);
 
 /**cmd_utils*/
@@ -98,7 +48,7 @@ int	print_errno(void);
 int	cmd_pwd(char **arg, char **env) ;
 
 /**cmd_echo*/
-int	cmd_echo(char **arg, char **env);
+int	cmd_echo(char **arg);
 
 /**init_env*/
 void	init_env(char ***env, char **envp);

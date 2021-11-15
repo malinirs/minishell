@@ -42,16 +42,14 @@ int	check_divider(char *str, int i, int code, char c)
 
 int	pre_parsing(char **str)
 {
-	t_flags	flag;
-
 	if ((*str)[0] == ' ')
 		*str = delete_space_top(*str);
 	delete_space_middle(str);
 	if ((*str)[(int)ft_strlen(*str) - 1] == ' ')
 		*str = delete_space_bottom(*str, (int)ft_strlen(*str));
-	flag.code = check_divider(*str, 0, 0, ' ');
-	if (flag.code != 0)
-		return (flag.code);
+	g_status = check_divider(*str, 0, 0, ' ');
+	if (g_status != 0)
+		return (g_status);
 	*str = check_space_divider(*str, (int)ft_strlen(*str));
 	return (0);
 }

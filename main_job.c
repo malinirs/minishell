@@ -138,6 +138,16 @@ void	write_in_file(t_lists *list, int fd0)
 	}
 }
 
+void	memory_free(int	**fd, int x)
+{
+	int	i;
+
+	i = -1;
+	while (++i < x)
+		free(fd[i]);
+	free(fd);
+	fd = NULL;
+}
 
 void	main_job(t_lists **list, char **env, int x)
 {
@@ -145,7 +155,6 @@ void	main_job(t_lists **list, char **env, int x)
 	int		id;
 	int		**fd;
 	t_lists	*temp;
-
 
 	temp = *list;
 	if (x == 1)
@@ -193,19 +202,7 @@ void	main_job(t_lists **list, char **env, int x)
 		}
 		else
 		{
-//			output(temp, env);
-
-
-		wait(NULL);
-
-//		char *line;
-//		get_next_line(fd[i][0], &line);
-//		printf("%s\n", line);
-//		while (get_next_line(fd[i][0], &line))
-//			printf("%s\n", line);
-//		printf("%s\n", line);
-
-
+			wait(NULL);
 			if (i > 0)
 				close(fd[i - 1][0]);
 			close(fd[i][1]);
@@ -217,10 +214,7 @@ void	main_job(t_lists **list, char **env, int x)
 			temp = temp->next;
 		}
 	}
-
-
-//	if (i > 1)
-//		close(fd[--i][0]);
+	memory_free(fd, x);
 	/** free fd */
 }
 
