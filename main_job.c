@@ -25,6 +25,8 @@ char	*search_and_split(char **env, char *str)
 	while (env[++i])
 		if (!ft_strncmp("PATH=", env[i], 5))
 			break ;
+	if (env[i] == NULL)
+		return (NULL);
 	path = ft_split(env[i], ':');
 	temp = ft_substr(path[0], 5, ft_strlen(path[0]) - 5);
 	free(path[0]);
@@ -36,8 +38,8 @@ char	*search_and_split(char **env, char *str)
 			break ;
 	if (path[i] == NULL)
 	{
-		write (2, str, ft_strlen(str));
-		write (2, ": command not found\n", 20);
+		write (1, str, ft_strlen(str));
+		write (1, ": command not found\n", 20);
 		exit (127);
 	}
 	return (path[i]);
@@ -46,11 +48,7 @@ char	*search_and_split(char **env, char *str)
 void	output(t_lists *list, char **env)
 {
 	char	*path;
-	int		flag;
 
-	flag = 1;
-
-//	printf("list->ptr[0] = %s\n", list->ptr[0]);
 	if (!ft_strcmp("echo", list->ptr[0]) || \
 	!ft_strcmp("pwd", list->ptr[0]) || \
 	!ft_strcmp("env", list->ptr[0]) || \
@@ -58,17 +56,21 @@ void	output(t_lists *list, char **env)
 	!ft_strcmp("unset", list->ptr[0]) || \
 	!ft_strcmp("exit", list->ptr[0]) || \
 	!ft_strcmp("cd", list->ptr[0]))
-		nav_cmd(&env, list, flag);
+		nav_cmd(&env, list, 1);
 	else
 	{
 		path = search_and_split(env, list->ptr[0]);
-//		printf("ASS\n");
+		if (path == NULL)
+		{
+			write (2, list->ptr[0], ft_strlen(list->ptr[0]));
+			write (2, ": Permission denied\n", 20);
+			exit(126);
+		}
 		execve(path, list->ptr, env);
 		write (2, list->ptr[0], ft_strlen(list->ptr[0]));
 		write (2, ": command not found\n", 20);
 		exit(127);
 	}
-
 }
 
 void	output_lonly(t_lists *list, char **env)
@@ -94,7 +96,12 @@ void	output_lonly(t_lists *list, char **env)
 		if (id == 0)
 		{
 			path = search_and_split(env, list->ptr[0]);
-//			printf("ASS\n");
+			if (path == NULL)
+			{
+				write (2, list->ptr[0], ft_strlen(list->ptr[0]));
+				write (2, ": Permission denied\n", 20);
+				exit(126);
+			}
 			execve(path, list->ptr, env);
 			write(2, list->ptr[0], ft_strlen(list->ptr[0]));
 			write(2, ": command not found\n", 20);
@@ -159,7 +166,10 @@ void	main_job(t_lists **list, char **env, int x)
 	temp = *list;
 	if (x == 1)
 	{
-		output_lonly(temp, env);
+		if ((*list)->ptr[0][0] == '\0')
+			write(1, "\n", 1);
+		else
+			output_lonly(temp, env);
 		return;
 	}
 	fd = memory_allocation(x);
@@ -215,20 +225,4 @@ void	main_job(t_lists **list, char **env, int x)
 		}
 	}
 	memory_free(fd, x);
-	/** free fd */
 }
-
-//fd2 = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644); >
-//fd2 = open(argv[argc - 1], O_WRONLY | O_CREAT, 0644); >>
-
-//int 	main(void)
-//{
-//	char *line;
-//	int fd;
-//
-//	fd = open("text.txt", O_RDONLY);
-//	while (get_next_line(fd, &line))
-//		printf("%s\n", line);
-//	printf("%s\n", line);
-//	return (0);
-//}

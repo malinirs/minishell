@@ -49,10 +49,12 @@ char	*check_space_divider(char *str, int len)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == ' ' && (str[i + 1] == '>' || str[i + 1] == '<' || \
+		if (str[i] == '\'' || str[i] == '\"')
+			check_quotes(str, &i);
+		else if (str[i] == ' ' && (str[i + 1] == '>' || str[i + 1] == '<' || \
 		str[i + 1] == '|'))
 			str = delete_space_before_divider(str, i, len);
-		if ((str[i] == '>' || str[i] == '<' || str[i] == '|') && \
+		else if ((str[i] == '>' || str[i] == '<' || str[i] == '|') && \
 		str[i + 1] == ' ')
 			str = delete_space_after_divider(str, i, len);
 		i++;

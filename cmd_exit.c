@@ -27,19 +27,17 @@ static int no_number(char *arg)
 	return (0);
 }
 
-//static int error_number(char *arg)
-//{
-//	write(2, "exit: ", 6);
-//	write(2, arg, ft_strlen(arg));
-//	write(2, ": numeric argument required\n", 28);
-//	exit(255);
-//	return (255);
-//}
+static int error_number(char *arg)
+{
+	write(2, "exit: ", 6);
+	write(2, arg, ft_strlen(arg));
+	write(2, ": numeric argument required\n", 28);
+	exit(255);
+}
 
 int	cmd_exit(t_lists *new, char **env)
 {
 	(void)env;
-
 	if (new->number_str == 1)
 		exit(new->end_code);
 	if (new->number_str > 2)
@@ -48,7 +46,7 @@ int	cmd_exit(t_lists *new, char **env)
 		return (1);
 	}
 	if (no_number(new->ptr[1]))
-		return (-1);//(error_number());
+		return (error_number(new->ptr[1]));
 	if (new->number_str == 2)
 		exit(ft_atoi(new->ptr[1]));
 	return (0);
