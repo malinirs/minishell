@@ -16,7 +16,10 @@
 # include <readline/readline.h>
 
 # define MINI	"\033[32mMini$ \033[0m"
+//# define MINI	"Mini$ "
 # define BUFFER_SIZE 1
+
+int g_status;
 
 typedef struct s_lists
 {
@@ -193,8 +196,8 @@ void	send_parsing(t_lists **list, char **env);
 
 
 /** main_job.c */
-void	main_job(t_lists *list, char **env, int x);
-void nav_cmd(char ***env, t_lists *new);
+void	main_job(t_lists **temp, char **env, int x);
+void nav_cmd(char ***env, t_lists *new, int flag);
 
 
 int	get_next_line(int fd, char **line);

@@ -32,24 +32,26 @@ SRCS		= 	main.c \
 
 OBJS		=	$(patsubst %.c,%.o,$(SRCS))
 
+HEADER		= ./minishell.h ./Libft/libft.h
+INCLUDE		= -I ~/.brew/opt/readline/include
+RDL			= -L ~/.brew/opt/readline/lib
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g
 RM			=	rm -f
 
 LIB			= ./Libft/libft.a
-RDL			= -lreadline
 
 all:		$(NAME)
 
-%.o : %.c
-			$(CC) $(CFLAGS) -c -g $< -o $@ $(INCLUDE)
+%.o : %.c	$(HEADER)
+			$(CC) $(CFLAGS) $(INCLUDE) -c $< -o ${<:.c=.o}
 
-$(NAME):	$(OBJS) $(OBJS_C)
-			$(MAKE) -C $(dir $(LIB))
-			$(CC) -o $(NAME) $(OBJS) $(LIB) $(RDL)
+$(NAME):	$(OBJS) $(HEADER)
+			$(MAKE) -C Libft
+			$(CC) -o $(NAME) $(INCLUDE)  $(OBJS) $(LIB) $(RDL) -lreadline
 
 clean:
-			$(RM) $(OBJS) $(OBJS:.o=.d)
+			$(RM) $(OBJS)
 			@make -C $(dir $(LIB)) clean
 
 fclean:		clean

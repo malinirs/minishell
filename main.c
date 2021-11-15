@@ -6,10 +6,11 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 13:10:43 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/14 17:53:42 by                  ###   ########.fr       */
+/*   Updated: 2021/11/15 17:22:34 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/termios.h>
 #include "minishell.h"
 
 int	number_of_Redirects_and_Pipe(t_lists *list)
@@ -28,22 +29,25 @@ int	number_of_Redirects_and_Pipe(t_lists *list)
 	return (count);
 }
 
-void nav_cmd(char ***env, t_lists *new)
+void nav_cmd(char ***env, t_lists *new, int flag)
 {
 		if(!ft_strcmp("pwd", new->ptr[0]))
 			new->end_code = cmd_pwd(new->ptr, *env);
-		if(!ft_strcmp("echo", new->ptr[0]))
+		else if(!ft_strcmp("echo", new->ptr[0]))
 			new->end_code = cmd_echo(new->ptr, *env);
-		if (!ft_strcmp("env", new->ptr[0]))
+		else if (!ft_strcmp("env", new->ptr[0]))
 			new->end_code = cmd_env(new->ptr, *env);
-		if (!ft_strcmp("export", new->ptr[0]))
+		else if (!ft_strcmp("export", new->ptr[0]))
 			new->end_code = cmd_export(new->ptr, *env);
-		if (!ft_strcmp("unset", new->ptr[0]))
+		else if (!ft_strcmp("unset", new->ptr[0]))
 			new->end_code = cmd_unset(new->ptr, *env);
-		if (!ft_strcmp("exit", new->ptr[0]))
-			new->end_code = cmd_exit(&new, *env);
-		if (!ft_strcmp("cd", new->ptr[0]))
+		else if (!ft_strcmp("exit", new->ptr[0]))
+			new->end_code = cmd_exit(new, *env);
+		else if (!ft_strcmp("cd", new->ptr[0]))
 			new->end_code = cmd_cd(new->ptr, *env);
+		if (flag == 1)
+			if (new->next->operation[0] == '|')
+				return ;
 }
 
 void	clear_list(t_lists **list, char *str)
@@ -70,6 +74,15 @@ void	clear_list(t_lists **list, char *str)
 	free_list(list);
 }
 
+void ctrl_ign(void)
+{
+	struct termios	ts;
+
+	tcgetattr(STDIN_FILENO, &ts);
+	ts.c_lflag = ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &ts);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
@@ -81,7 +94,9 @@ int	main(int argc, char **argv, char **envp)
 	list = NULL;
 	(void)argc;
 	(void)argv;
+	rl_outstream = stderr;
 	init_env(&env, envp);
+	ctrl_ign();
 	signal_ign();
 	while (5)
 	{
@@ -104,9 +119,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 
 
-		main_job(list, env, ft_lstsize(list));
-//		nav_cmd(list->ptr, &env, *list);
-
+		main_job(&list, env, ft_lstsize(list));
 		if (str || list)
 			clear_list(&list, str);
 

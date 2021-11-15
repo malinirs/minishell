@@ -46,6 +46,9 @@ char	*search_and_split(char **env, char *str)
 void	output(t_lists *list, char **env)
 {
 	char	*path;
+	int		flag;
+
+	flag = 1;
 
 	printf("list->ptr[0] = %s\n", list->ptr[0]);
 	if (!ft_strcmp("echo", list->ptr[0]) || \
@@ -55,7 +58,7 @@ void	output(t_lists *list, char **env)
 	!ft_strcmp("unset", list->ptr[0]) || \
 	!ft_strcmp("exit", list->ptr[0]) || \
 	!ft_strcmp("cd", list->ptr[0]))
-		nav_cmd(&env, list);
+		nav_cmd(&env, list, flag);
 	else
 	{
 		path = search_and_split(env, list->ptr[0]);
@@ -65,6 +68,42 @@ void	output(t_lists *list, char **env)
 		write (2, ": command not found\n", 20);
 		exit(127);
 	}
+
+}
+
+void	output_lonly(t_lists *list, char **env)
+{
+	char	*path;
+	int 	id;
+	int		flag;
+
+	flag = 0;
+
+	printf("list->ptr[0] = %s\n", list->ptr[0]);
+	if (!ft_strcmp("echo", list->ptr[0]) || \
+	!ft_strcmp("pwd", list->ptr[0]) || \
+	!ft_strcmp("env", list->ptr[0]) || \
+	!ft_strcmp("export", list->ptr[0]) || \
+	!ft_strcmp("unset", list->ptr[0]) || \
+	!ft_strcmp("exit", list->ptr[0]) || \
+	!ft_strcmp("cd", list->ptr[0]))
+		nav_cmd(&env, list, flag);
+	else
+	{
+		id = fork();
+		if (id == 0)
+		{
+			path = search_and_split(env, list->ptr[0]);
+			printf("ASS\n");
+			execve(path, list->ptr, env);
+			write(2, list->ptr[0], ft_strlen(list->ptr[0]));
+			write(2, ": command not found\n", 20);
+			exit(127);
+		}
+		else
+			wait(NULL);
+	}
+
 }
 
 int	**memory_allocation(int x)
@@ -79,63 +118,84 @@ int	**memory_allocation(int x)
 	return (fd);
 }
 
-//void	write_in_file(t_lists *list, int fd0)
-//{
-//	int	fdOpen;
-//
-//	if (list->operation[1] == '>')
-//		fdOpen = open(list->next->ptr[0], O_WRONLY | O_CREAT, 0644);
-//	else
-//		fdOpen = open(list->next->ptr[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//
-//	close(fdOpen);
-//}
-
-void	main_job(t_lists *list, char **env, int x)
+void	write_in_file(t_lists **list, int fd0)
 {
-	int	i;
-	int	id;
-	int	**fd;
+	int	fdFile;
 
+	while ((*list)->operation[0] == '>')
+	{
+
+		if ((*list)->operation[1] == '>')
+			fdFile = open((*list)->next->ptr[0], O_WRONLY | O_CREAT, 0644);
+		else
+			fdFile = open((*list)->next->ptr[0], O_WRONLY | O_CREAT |
+			O_TRUNC, 0777);
+		if ((*list)->next->operation[0] != '>')
+			dup2(fdFile, fd0);
+		close(fdFile);
+
+		*list = (*list)->next;
+	}
+}
+
+
+void	main_job(t_lists **list, char **env, int x)
+{
+	int		i;
+	int		id;
+	int		**fd;
+	t_lists	*temp;
+
+	temp = *list;
+	if (x == 1)
+	{
+		output_lonly(temp, env);
+		return;
+	}
 	fd = memory_allocation(x);
 	i = -1;
-	while (++i <= x - 1)
+	while (++i <= x - 1 && temp)
 	{
 		pipe(fd[i]);
 		id = fork();
 		if (id == 0) /** дочерний процесс */
 		{
-			if (i == x - 1)
+			if (i == x - 1) // last
 			{
 				close(fd[i][1]);
 				dup2(fd[i - 1][0], 0);
 			}
-			else if (i == 0)
+			else if (i == 0) // first
 			{
 				close(fd[i][0]);
 				dup2(fd[i][1], 1);
 			}
-			else
+			else // midle
 			{
 				close(fd[i][0]);
 				dup2(fd[i - 1][0], 0);
 				dup2(fd[i][1], 1);
 			}
-			output(list, env);
+			output(temp, env);
 		}
 		else
 		{
-//			output(list, env);
+//			output(temp, env);
 
-//			if (list->operation[0] == '>')
-//			{
-//				if (i == 0)
-//					write_in_file(list, fd[i][0]);
-//				else
-//					write_in_file(list, fd[i - 1][0]);
-//			}
+			if (temp->operation[0] == '>')
+			{
+				if (i == 0)
+					write_in_file(&temp, fd[i][0]);
+				else
+					write_in_file(&temp, fd[i - 1][0]);
+			}
 
 		wait(NULL);
+
+//		if (temp->operation[0] == '>' && i == 0)
+//			write_in_file(fd[i][0], &temp);
+//		else if (temp->operation[0] == '>' && i > 0)
+//			write_in_file(fd[i - 1][0], &temp);
 
 //		char *line;
 //		get_next_line(fd[i][0], &line);
@@ -148,7 +208,7 @@ void	main_job(t_lists *list, char **env, int x)
 			if (i > 0)
 				close(fd[i - 1][0]);
 			close(fd[i][1]);
-			list = list->next;
+			temp = temp->next;
 		}
 	}
 
