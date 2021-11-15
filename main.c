@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 13:10:43 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/15 22:23:59 by                  ###   ########.fr       */
+/*   Updated: 2021/11/15 22:57:29 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 		if (pre_parsing(&str) == 0)
 		{
 			list = creation_list(str, env);
-			main_job(&list, env, ft_lstsize(list));
+			main_job(&list, env, ft_lstsize(list), -1);
 		}
 
 		new = list;

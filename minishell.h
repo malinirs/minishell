@@ -146,13 +146,24 @@ void	send_parsing(t_lists **list, char **env);
 
 
 /** main_job.c */
-void	main_job(t_lists **temp, char **env, int x);
+void	main_job(t_lists **list, char **env, int x, int i);
 void nav_cmd(char ***env, t_lists *new, int flag);
+int	value(t_lists *list);
 
 
 int	get_next_line(int fd, char **line);
 
+/** process.c */
+void	parent_process(t_lists **temp, int i, int **fd);
+void	baby_process(int x, t_lists *temp, int i, int **fd, char **env);
 
+/** output.c */
+void	command_lonly(t_lists *temp, char **env);
+void	output(t_lists *list, char **env);
+
+
+void	take_from_file(t_lists *list, int fd0);
+void	write_to_file(t_lists *list, int fd1);
 
 
 #endif
