@@ -50,7 +50,7 @@ void	output(t_lists *list, char **env)
 
 	flag = 1;
 
-	printf("list->ptr[0] = %s\n", list->ptr[0]);
+//	printf("list->ptr[0] = %s\n", list->ptr[0]);
 	if (!ft_strcmp("echo", list->ptr[0]) || \
 	!ft_strcmp("pwd", list->ptr[0]) || \
 	!ft_strcmp("env", list->ptr[0]) || \
@@ -62,7 +62,7 @@ void	output(t_lists *list, char **env)
 	else
 	{
 		path = search_and_split(env, list->ptr[0]);
-		printf("ASS\n");
+//		printf("ASS\n");
 		execve(path, list->ptr, env);
 		write (2, list->ptr[0], ft_strlen(list->ptr[0]));
 		write (2, ": command not found\n", 20);
@@ -79,7 +79,7 @@ void	output_lonly(t_lists *list, char **env)
 
 	flag = 0;
 
-	printf("list->ptr[0] = %s\n", list->ptr[0]);
+//	printf("list->ptr[0] = %s\n", list->ptr[0]);
 	if (!ft_strcmp("echo", list->ptr[0]) || \
 	!ft_strcmp("pwd", list->ptr[0]) || \
 	!ft_strcmp("env", list->ptr[0]) || \
@@ -94,7 +94,7 @@ void	output_lonly(t_lists *list, char **env)
 		if (id == 0)
 		{
 			path = search_and_split(env, list->ptr[0]);
-			printf("ASS\n");
+//			printf("ASS\n");
 			execve(path, list->ptr, env);
 			write(2, list->ptr[0], ft_strlen(list->ptr[0]));
 			write(2, ": command not found\n", 20);
@@ -118,23 +118,23 @@ int	**memory_allocation(int x)
 	return (fd);
 }
 
-void	write_in_file(t_lists **list, int fd0)
+void	write_in_file(t_lists *list, int fd0)
 {
 	int	fdFile;
 
-	while ((*list)->operation[0] == '>')
+	while ((list)->operation[0] == '>')
 	{
 
-		if ((*list)->operation[1] == '>')
-			fdFile = open((*list)->next->ptr[0], O_WRONLY | O_CREAT, 0644);
+		if ((list)->operation[1] == '>')
+			fdFile = open((list)->next->ptr[0], O_WRONLY | O_APPEND | O_CREAT,
+						  0644);
 		else
-			fdFile = open((*list)->next->ptr[0], O_WRONLY | O_CREAT |
-			O_TRUNC, 0777);
-		if ((*list)->next->operation[0] != '>')
+			fdFile = open((list)->next->ptr[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if ((list)->next->operation[0] != '>')
 			dup2(fdFile, fd0);
 		close(fdFile);
 
-		*list = (*list)->next;
+		list = (list)->next;
 	}
 }
 
@@ -145,6 +145,7 @@ void	main_job(t_lists **list, char **env, int x)
 	int		id;
 	int		**fd;
 	t_lists	*temp;
+
 
 	temp = *list;
 	if (x == 1)
@@ -168,13 +169,23 @@ void	main_job(t_lists **list, char **env, int x)
 			else if (i == 0) // first
 			{
 				close(fd[i][0]);
-				dup2(fd[i][1], 1);
+				if (temp->operation[0] == '>')
+				{
+					close(fd[i][1]);
+					write_in_file(temp, 1);
+				}
+				else
+					dup2(fd[i][1], 1);
 			}
-			else // midle
+			else // middle
 			{
-				close(fd[i][0]);
 				dup2(fd[i - 1][0], 0);
 				dup2(fd[i][1], 1);
+				if (temp->operation[0] == '>')
+				{
+					write_in_file(temp, fd[i - 1][0]);
+				}
+				close(fd[i][0]);
 			}
 			output(temp, env);
 		}
@@ -182,20 +193,8 @@ void	main_job(t_lists **list, char **env, int x)
 		{
 //			output(temp, env);
 
-			if (temp->operation[0] == '>')
-			{
-				if (i == 0)
-					write_in_file(&temp, fd[i][0]);
-				else
-					write_in_file(&temp, fd[i - 1][0]);
-			}
 
 		wait(NULL);
-
-//		if (temp->operation[0] == '>' && i == 0)
-//			write_in_file(fd[i][0], &temp);
-//		else if (temp->operation[0] == '>' && i > 0)
-//			write_in_file(fd[i - 1][0], &temp);
 
 //		char *line;
 //		get_next_line(fd[i][0], &line);
@@ -208,18 +207,20 @@ void	main_job(t_lists **list, char **env, int x)
 			if (i > 0)
 				close(fd[i - 1][0]);
 			close(fd[i][1]);
+			if (i > 0 && temp->operation[0] == '>')
+				close(fd[i][0]);
+
+			while (temp->operation[0] == '>')
+			{
+				temp = temp->next;
+			}
 			temp = temp->next;
 		}
 	}
 
 
-//	char *line;
-//	while (get_next_line(fd[0][0], &line))
-//		printf("%s\n", line);
-//	printf("%s\n", line);
-
-
-	close(fd[--i][0]);
+//	if (i > 1)
+//		close(fd[--i][0]);
 	/** free fd */
 }
 
