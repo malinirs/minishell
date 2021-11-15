@@ -180,11 +180,13 @@ void	main_job(t_lists **list, char **env, int x)
 			else // middle
 			{
 				dup2(fd[i - 1][0], 0);
-				dup2(fd[i][1], 1);
 				if (temp->operation[0] == '>')
 				{
-					write_in_file(temp, fd[i - 1][0]);
+					close(fd[i][1]);
+					write_in_file(temp, 1);
 				}
+				else
+					dup2(fd[i][1], 1);
 				close(fd[i][0]);
 			}
 			output(temp, env);
@@ -207,13 +209,11 @@ void	main_job(t_lists **list, char **env, int x)
 			if (i > 0)
 				close(fd[i - 1][0]);
 			close(fd[i][1]);
-			if (i > 0 && temp->operation[0] == '>')
-				close(fd[i][0]);
 
 			while (temp->operation[0] == '>')
-			{
 				temp = temp->next;
-			}
+			if (i > 0 && temp->operation[0] == '>')
+				close(fd[i][0]);
 			temp = temp->next;
 		}
 	}
