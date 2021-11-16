@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 13:13:38 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/12 18:09:29 by awoods           ###   ########.fr       */
+/*   Updated: 2021/11/16 16:36:41 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_lists	*ft_lstnew(char *content)
 	t_lists	*new;
 
 	new = malloc(sizeof(t_lists));
-	new->end_code = 0;
 	new->str = content;
 	new->next = NULL;
 	return (new);

@@ -6,19 +6,19 @@
 /*   By: hparis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 11:18:13 by hparis            #+#    #+#             */
-/*   Updated: 2021/11/15 21:30:05 by                  ###   ########.fr       */
+/*   Updated: 2021/11/16 18:45:49 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cmd_echo(char **arg)
+int	cmd_echo(char **arg, int status)
 {
 	int		i;
 	char	*temp;
 
 	i = 0;
-	temp = ft_itoa(g_status);
+	temp = ft_itoa(status);
 	if (*arg && arg[1])
 	{
 		if (!ft_strcmp("-n", arg[1]))

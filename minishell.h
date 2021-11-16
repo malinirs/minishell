@@ -26,7 +26,6 @@ typedef struct s_lists
 	char			*str;
 	char			**ptr; /**argv*/
 	struct s_lists	*next;
-	int				end_code; /** termination code - код завершения. Изменяется при выведении ошибки */
 	int				number_str;/**количество рагументов*/
 	char			*operation; /** Redirects and Pipe*/
 }				t_lists;
@@ -34,12 +33,12 @@ typedef struct s_lists
 typedef struct s_flags
 {
 	int				start; /** координата делителя для листов и **ptr */
-	int				code; /** код завершения программы в парсере*/
-	int				quote;
-	int				flag;
+	int				lvl;
+	char			*temp;
 }				t_flags;
 
 void	clear_list(t_lists **list, char *str);
+void    rl_replace_line(const char *buffer, int val);
 
 /**cmd_utils*/
 int	print_errno(void);
@@ -48,7 +47,7 @@ int	print_errno(void);
 int	cmd_pwd(char **arg, char **env) ;
 
 /**cmd_echo*/
-int	cmd_echo(char **arg);
+int	cmd_echo(char **arg, int status);
 
 /**init_env*/
 void	init_env(char ***env, char **envp);
@@ -84,6 +83,7 @@ void	signal_d(void);
 void	signal_c(int sig);
 void	signal_ign(void);
 void	signal_dfl(void);
+void	signal_pipe(void);
 
 /** utils_1.c */
 int		ft_isalnum(int c);
@@ -149,12 +149,13 @@ void	send_parsing(t_lists **list, char **env);
 void	main_job(t_lists **list, char **env, int x, int i);
 void nav_cmd(char ***env, t_lists *new, int flag);
 int	value(t_lists *list);
+void	search_lvl(char **env, int i, t_flags *flag);
 
 
 int	get_next_line(int fd, char **line);
 
 /** process.c */
-void	parent_process(t_lists **temp, int i, int **fd);
+void	parent_process(t_lists **temp, int i, int **fd, int pid);
 void	baby_process(int x, t_lists *temp, int i, int **fd, char **env);
 
 /** output.c */

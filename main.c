@@ -6,7 +6,7 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 13:10:43 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/15 22:57:29 by                  ###   ########.fr       */
+/*   Updated: 2021/11/16 20:45:39 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 
 int	number_of_Redirects_and_Pipe(t_lists *list)
 {
-//	t_lists	*temp;
 	int		count;
 
 	count = 0;
-//	temp = list;
 	while (list != NULL)
 	{
 		if (list->operation[0])
@@ -34,7 +32,7 @@ void nav_cmd(char ***env, t_lists *new, int flag)
 		if(!ft_strcmp("pwd", new->ptr[0]))
 			g_status = cmd_pwd(new->ptr, *env);
 		else if(!ft_strcmp("echo", new->ptr[0]))
-			g_status = cmd_echo(new->ptr);
+			g_status = cmd_echo(new->ptr, g_status);
 		else if (!ft_strcmp("env", new->ptr[0]))
 			g_status = cmd_env(new->ptr, *env);
 		else if (!ft_strcmp("export", new->ptr[0]))
@@ -74,15 +72,6 @@ void	clear_list(t_lists **list, char *str)
 	free_list(list);
 }
 
-void ctrl_ign(void)
-{
-	struct termios	ts;
-
-	tcgetattr(STDIN_FILENO, &ts);
-	ts.c_lflag = ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &ts);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
@@ -90,13 +79,13 @@ int	main(int argc, char **argv, char **envp)
 	t_lists	*list;
 	t_lists	*new;
 
+	g_status = 0;
 	str = NULL;
 	list = NULL;
 	(void)argc;
 	(void)argv;
 	rl_outstream = stderr;
 	init_env(&env, envp);
-	ctrl_ign();
 	signal_ign();
 	while (5)
 	{
@@ -120,10 +109,9 @@ int	main(int argc, char **argv, char **envp)
 			printf("    operation = %s\n", new->operation);
 			new = new->next;
 		}
-
-
 		if (str || list)
 			clear_list(&list, str);
 
 	}
 }
+

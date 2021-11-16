@@ -6,7 +6,7 @@
 /*   By: hparis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 11:18:55 by hparis            #+#    #+#             */
-/*   Updated: 2021/11/12 18:56:17 by                  ###   ########.fr       */
+/*   Updated: 2021/11/16 20:34:02 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	cmd_exit(t_lists *new, char **env)
 {
 	(void)env;
 	if (new->number_str == 1)
-		exit(new->end_code);
+		exit(0);
 	if (new->number_str > 2)
 	{
 		write(2, "exit: too many arguments\n", 25);

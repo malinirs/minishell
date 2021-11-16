@@ -65,15 +65,27 @@ void	output(t_lists *list, char **env)
 	}
 }
 
+void	status(int pid)
+{
+	int	status;
+
+	status = 0;
+	waitpid(pid, &status, 0);
+	g_status = WSTOPSIG(status);
+}
+
 static void	output_lonly(t_lists *list, char **env)
 {
 	char	*path;
+	int		pid;
 
 	if (value(list))
 		nav_cmd(&env, list, 0);
 	else
 	{
-		if (!fork())
+	g_status = 100;
+		pid = fork();
+		if (pid == 0)
 		{
 			path = search_and_split(env, list->ptr[0], -1);
 			if (path == NULL)
@@ -88,7 +100,7 @@ static void	output_lonly(t_lists *list, char **env)
 			exit(127);
 		}
 		else
-			wait(NULL);
+			status(pid);
 	}
 }
 

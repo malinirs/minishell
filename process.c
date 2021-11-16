@@ -1,10 +1,11 @@
 #include "minishell.h"
-#include <sys/wait.h>
 
-void	parent_process(t_lists **temp, int i, int **fd)
+void	parent_process(t_lists **temp, int i, int **fd, int pid)
 {
+	int	status;
 
-	wait(NULL);
+	waitpid(pid, &status, 0);
+	g_status = WSTOPSIG(status);
 	if (i > 0)
 		close(fd[i - 1][0]);
 	close(fd[i][1]);
