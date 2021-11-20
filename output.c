@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   output.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/16 22:33:24 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/16 23:10:58 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	adding_command(char	**path, char *str)
@@ -65,15 +77,6 @@ void	output(t_lists *list, char **env)
 	}
 }
 
-void	status(int pid)
-{
-	int	status;
-
-	status = 0;
-	waitpid(pid, &status, 0);
-	g_status = WSTOPSIG(status);
-}
-
 static void	output_lonly(t_lists *list, char **env)
 {
 	char	*path;
@@ -83,7 +86,6 @@ static void	output_lonly(t_lists *list, char **env)
 		nav_cmd(&env, list, 0);
 	else
 	{
-	g_status = 100;
 		pid = fork();
 		if (pid == 0)
 		{

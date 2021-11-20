@@ -6,7 +6,7 @@
 #    By: awoods <awoods@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/18 12:02:07 by awoods            #+#    #+#              #
-#    Updated: 2021/04/19 20:57:01 by awoods           ###   ########.fr        #
+#    Updated: 2021/11/12 18:09:33 by awoods           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 all		: $(NAME)
 
-$(NAME)	: $(OBJS)
+$(NAME)	: $(OBJS) libft.h
 	ar rc $(NAME) $(OBJS)
 
 bonus	:	$(B_OBJS)

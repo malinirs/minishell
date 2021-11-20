@@ -54,3 +54,12 @@ int	ft_strcmp(char *s1, char *s2)
 		i++;
 	return (s1[i] - s2[i]);
 }
+
+void	status(int pid)
+{
+	int	status;
+
+	status = 0;
+	waitpid(pid, &status, 0);
+	g_status = WSTOPSIG(status);
+}

@@ -6,15 +6,15 @@
 /*   By: hparis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 11:18:55 by hparis            #+#    #+#             */
-/*   Updated: 2021/11/16 20:34:02 by                  ###   ########.fr       */
+/*   Updated: 2021/11/16 20:48:57 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int no_number(char *arg)
+static int	no_number(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (ft_strlen(arg) > 21)
@@ -27,7 +27,7 @@ static int no_number(char *arg)
 	return (0);
 }
 
-static int error_number(char *arg)
+static int	error_number(char *arg)
 {
 	write(2, "exit: ", 6);
 	write(2, arg, ft_strlen(arg));

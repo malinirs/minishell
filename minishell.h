@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/16 23:53:49 by awoods            #+#    #+#             */
+/*   Updated: 2021/11/16 23:58:18 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
 # include "Libft/libft.h"
 # include <unistd.h>
@@ -16,67 +28,73 @@
 # include <readline/readline.h>
 
 # define MINI	"\033[32mMini$ \033[0m"
-//# define MINI	"Mini$ "
 # define BUFFER_SIZE 1
-
-int g_status;
 
 typedef struct s_lists
 {
 	char			*str;
-	char			**ptr; /**argv*/
+	char			**ptr;
 	struct s_lists	*next;
-	int				number_str;/**количество рагументов*/
-	char			*operation; /** Redirects and Pipe*/
+	int				number_str;
+	char			*operation;
+	int				fd[2];
 }				t_lists;
 
 typedef struct s_flags
 {
-	int				start; /** координата делителя для листов и **ptr */
+	int				start;
 	int				lvl;
 	char			*temp;
+	int				pid;
+	int				x;
+	char			**env;
 }				t_flags;
 
+int	g_status;
+
 void	clear_list(t_lists **list, char *str);
-void    rl_replace_line(const char *buffer, int val);
+void	rl_replace_line(const char *buffer, int val);
 
 /**cmd_utils*/
-int	print_errno(void);
+int		print_errno(void);
+int		shlvl_up(t_lists **list, char **env);
+int		value(t_lists *list);
+void	search_lvl(char **env, int i, t_flags *flag);
 
 /**cmd_pwd*/
-int	cmd_pwd(char **arg, char **env) ;
+int		cmd_pwd(char **arg, char **env);
 
 /**cmd_echo*/
-int	cmd_echo(char **arg, int status);
+int		cmd_echo(char **arg, int status);
 
 /**init_env*/
 void	init_env(char ***env, char **envp);
-int	cmd_env(char **arg, char **env);
+int		cmd_env(char **arg, char **env);
 
 /**cmd_export*/
-int	cmd_export(char **arg, char **env);
+int		cmd_export(char **arg, char **env);
 int		equals(char *str);
 void	sort_arg(char **env);
 void	replace_var(char *arg, char **env);
 
 /**cmd_unset*/
-int	cmd_unset(char **arg, char **env);
+int		cmd_unset(char **arg, char **env);
 
 /**cmd_cd*/
-int	cmd_cd(char **arg, char **env);
-int	new_work_directory(char **arg, char **env);
-int	new_directory(char *home, char **env);
-int	set_new_pwd(char **env);
-int	set_new_oldpwd(char *pwd_old, char **env);
+int		cmd_cd(char **arg, char **env);
+int		new_work_directory(char **arg, char **env);
+int		new_directory(char *home, char **env);
+int		set_new_pwd(char **env);
+int		set_new_oldpwd(char *pwd_old, char **env);
 
 /**cd_utils*/
-char *find_home_oldpwd(char **env, char *str);
-int	check_to_oldpwd(char **env);
-int	help_change_dir(char *oldpwd, char *home, char **env);
-int	chdir_error(char *dir);
+char	*find_home_oldpwd(char **env, char *str);
+int		check_to_oldpwd(char **env);
+int		help_change_dir(char *oldpwd, char *home, char **env);
+int		chdir_error(char *dir);
 
 /**cmd_exit*/
-int	cmd_exit(t_lists *new, char **env);
+int		cmd_exit(t_lists *new, char **env);
 
 /**signal*/
 void	signal_d(void);
@@ -89,6 +107,7 @@ void	signal_pipe(void);
 int		ft_isalnum(int c);
 char	*ft_strstr(char *haystack, char *needle);
 int		ft_strcmp(char *s1, char *s2);
+void	status(int pid);
 
 /** pars_dollar.c */
 char	*pars_dollar(char *str, int *i, char **env);
@@ -101,7 +120,7 @@ char	*pars_double_quotes(char *str, int *i, char **env);
 t_lists	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_lists **lst, t_lists *new);
 void	free_list(t_lists **list);
-int	ft_lstsize(t_lists *lst);
+int		ft_lstsize(t_lists *lst);
 
 /** creation_list.c */
 t_lists	*creation_list(char *str, char **env);
@@ -110,7 +129,7 @@ t_lists	*creation_list(char *str, char **env);
 char	**write_array(char *str, t_lists **list, t_flags *flag);
 
 /** pre_parsing.c */
-int	pre_parsing(char **str);
+int		pre_parsing(char **str);
 
 /** delete_space.c */
 char	*delete_space_top(char *str);
@@ -136,35 +155,26 @@ int		write_error_e(char c);
 
 /** check_symbol.c */
 void	check_quotes(char *str, int *i);
-int	check_pipe(char c);
-int	check_redirect(char c);
+int		check_pipe(char c);
+int		check_redirect(char c);
 
 /** parsing.c */
 void	send_parsing(t_lists **list, char **env);
 
-
-
-
 /** main_job.c */
 void	main_job(t_lists **list, char **env, int x, int i);
-void nav_cmd(char ***env, t_lists *new, int flag);
-int	value(t_lists *list);
-void	search_lvl(char **env, int i, t_flags *flag);
-
-
-int	get_next_line(int fd, char **line);
+void	nav_cmd(char ***env, t_lists *new, int flag);
+int		value(t_lists *list);
 
 /** process.c */
 void	parent_process(t_lists **temp, int i, int **fd, int pid);
-void	baby_process(int x, t_lists *temp, int i, int **fd, char **env);
+void	baby_process(t_lists *temp, int i, int **fd, t_flags *flag);
 
 /** output.c */
 void	command_lonly(t_lists *temp, char **env);
 void	output(t_lists *list, char **env);
 
-
 void	take_from_file(t_lists *list, int fd0);
 void	write_to_file(t_lists *list, int fd1);
-
 
 #endif

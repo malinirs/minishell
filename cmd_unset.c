@@ -40,7 +40,7 @@ int	cmd_unset(char **arg, char **env)
 			continue ;
 		len = ft_strlen(arg[j]);
 		while (env && env[++i])
-			if (!ft_strncmp(env[i],arg[j], len) && env[i][len] == '=')
+			if (!ft_strncmp(env[i], arg[j], len) && env[i][len] == '=')
 				break ;
 		free(env[i]);
 		i -= 1;

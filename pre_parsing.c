@@ -6,22 +6,26 @@
 /*   By: awoods <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 13:14:26 by awoods            #+#    #+#             */
-/*   Updated: 2021/11/16 19:07:41 by                  ###   ########.fr       */
+/*   Updated: 2021/11/16 23:15:42 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	check_divider_util(char *str, int *i, int *code, char *c)
+{
+	*c = str[*i];
+	check_quotes(str, i);
+	if (str[*i] == '\0')
+		*code = write_error_e(*c);
+}
 
 int	check_divider(char *str, int i, int code, char c)
 {
 	while (str[++i])
 	{
 		if (str[i] == '\"' || str[i] == '\'')
-		{
-			c = str[i], check_quotes(str, &i);
-			if (str[i] == '\0')
-				code = write_error_e(c);
-		}
+			check_divider_util(str, &i, &code, &c);
 		else if (str[i] == '>' && str[i + 1] == '>')
 			divider_right_right(str, ++i, &code);
 		else if (str[i] == '<' && str[i + 1] == '<')

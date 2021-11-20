@@ -70,7 +70,7 @@ int	cmd_cd(char **arg, char **env)
 	char	*f_home;
 
 	i = 0;
-	while(arg[i])
+	while (arg[i])
 		i++;
 	if (i > 2)
 	{

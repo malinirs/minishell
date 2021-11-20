@@ -26,7 +26,6 @@ SRCS		= 	main.c \
 				cmd_utils.c \
 				signal.c \
 				main_job.c \
-				get_next_line.c \
 				process.c \
 				output.c \
 
